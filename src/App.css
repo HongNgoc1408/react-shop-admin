@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+/* @import url("https://fonts.googleapis.com/css?family=Karla:400,700&display=swap"); */
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+/* .font-family-karla {
+  font-family: karla;
+} */
+
+.bg-sidebar {
+  background: #3d68ff;
+}
+
+.cta-btn {
+  color: #3d68ff;
+}
+.upgrade-btn {
+  background: #1947ee;
+}
+.upgrade-btn:hover {
+  background: #0038fd;
+}
+.active-nav-link {
+  background: #1947ee;
+}
+.nav-item:hover {
+  background: #1947ee;
+}
+.account-link:hover {
+  background: #3d68ff;
+}
+
+.title {
+  @apply text-3xl font-semibold capitalize text-center my-8 cursor-pointer;
+}
+
+.bg-dark-button {
+  @apply bg-Black hover:bg-orange-500 px-6 py-2 text-white font-semibold rounded-md;
+}
+
+.bg-light-button {
+  @apply px-6 py-2 bg-white text-Black hover:bg-orange-500 rounded-md font-semibold;
+}
+
