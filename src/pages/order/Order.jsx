@@ -1,20 +1,20 @@
 import React from "react";
-import LeftPageHome from "../../components/LeftPageHome";
 import RightTopPageHome from "../../components/RightTopPageHome";
-import RightBottomPageHome from "../../components/RightBottomPageHome";
+import LeftPageHome from "../../components/LeftPageHome";
 import Footer from "../../components/Footer";
+import ManagerOrder from "./ManagerOrder";
 
-const Home = () => {
+const Order = () => {
   return (
     <div className="bg-gray-100 font-family-karla flex">
       <LeftPageHome />
       <div className="w-full flex flex-col h-screen overflow-y-hidden">
         <RightTopPageHome />
-        <RightBottomPageHome />
+        <ManagerOrder />
         <Footer />
       </div>
     </div>
   );
 };
 
-export default Home;
+export default Order;
