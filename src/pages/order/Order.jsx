@@ -2,7 +2,7 @@ import React from "react";
 import RightTopPageHome from "../../components/RightTopPageHome";
 import LeftPageHome from "../../components/LeftPageHome";
 import Footer from "../../components/Footer";
-import ManagerOrder from "./ManagerOrder";
+import ManagerOrder from "../../components/order/ManagerOrder";
 
 const Order = () => {
   return (

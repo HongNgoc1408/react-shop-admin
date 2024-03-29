@@ -11,7 +11,7 @@ const AddProducts = () => {
           <form className="p-10 bg-white rounded shadow-xl">
             <div className="">
               <label className="block text-sm text-gray-600" htmlFor="name">
-                Name
+                Name Product
               </label>
               <input
                 className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
@@ -19,12 +19,12 @@ const AddProducts = () => {
                 name="name"
                 type="text"
                 required=""
-                placeholder="Your Name"
-                aria-label="Name"
+                placeholder="Name Product"
+                aria-label="Name Product"
               />
             </div>
             <div className="mt-2">
-              <label className="block text-sm text-gray-600" htmlFor="email">
+              <label className="block text-sm text-gray-600" htmlFor="">
                 Email
               </label>
               <input

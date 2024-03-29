@@ -32,15 +32,18 @@ body {
   background: #3d68ff;
 }
 
+.title_cols {
+  @apply flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item;
+}
+
 .title {
-  @apply text-3xl font-semibold capitalize text-center my-8 cursor-pointer;
+  @apply text-3xl font-semibold capitalize text-black cursor-pointer;
 }
 
 .bg-dark-button {
-  @apply bg-Black hover:bg-orange-500 px-6 py-2 text-white font-semibold rounded-md;
+  @apply bg-black text-white  hover:bg-orange-500 px-6 py-2 font-semibold rounded-md;
 }
 
-.bg-light-button {
+/* .bg-light-button {
   @apply px-6 py-2 bg-white text-Black hover:bg-orange-500 rounded-md font-semibold;
-}
-
+} */

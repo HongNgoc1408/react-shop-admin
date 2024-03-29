@@ -1,12 +1,12 @@
 import React from "react";
 import LeftPageHome from "../../components/LeftPageHome";
 import RightTopPageHome from "../../components/RightTopPageHome";
-import ManagerCategory from "./ManagerCategory";
+import ManagerCategory from "../../components/category/ManagerCategory";
 import Footer from "../../components/Footer";
 
 const Category = () => {
   return (
-    <div className="bg-gray-100 font-family-karla flex">
+    <div className="bg-gray-100 flex">
       <LeftPageHome />
       <div className="w-full flex flex-col h-screen overflow-y-hidden">
         <RightTopPageHome />

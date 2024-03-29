@@ -11,60 +11,40 @@ import {
   FaTachometerAlt,
 } from "react-icons/fa";
 import logo from "/images/zara-logo.png";
+
 const LeftPageHome = () => {
   return (
     <div className="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
       <div className="p-6">
-        <a
-          href="/home"
-          className="text-white text-3xl font-semibold uppercase hover:text-gray-300"
-        >
-          <img src={logo} alt="" />
+        <a href="/">
+          <img src={logo} alt="logo" />
         </a>
         <button className="w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
           <FaPlus className="mr-3" /> New Report
         </button>
       </div>
       <nav className="text-white text-base font-semibold pt-3">
-        <a
-          href="/home"
-          className="flex items-center active-nav-link text-white py-4 pl-6 nav-item"
-        >
+        <a href="/" className="title_cols">
           <FaTachometerAlt className="mr-3" />
           Dashboard
         </a>
-        <a
-          href="/category"
-          className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-        >
+        <a href="/category" className="title_cols">
           <FaStickyNote className="mr-3" />
           Manager Category
         </a>
-        <a
-          href="/product"
-          className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-        >
+        <a href="/product" className="title_cols">
           <FaTable className="mr-3" />
           Manager Products
         </a>
-        <a
-          href="/order"
-          className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-        >
+        <a href="/order" className="title_cols">
           <FaAlignLeft className="mr-3" />
           Manager Order
         </a>
-        <a
-          href="#"
-          className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-        >
+        <a href="/user" className="title_cols">
           <FaTabletAlt className="mr-3" />
           Manager Users
         </a>
-        <a
-          href="#"
-          className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item"
-        >
+        <a href="#" className="title_cols">
           <FaCalendar className="mr-3" />
           Manager Contact
         </a>
