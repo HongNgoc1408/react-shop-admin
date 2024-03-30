@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
 
 const FormLogin = () => {
+  const [isShowPassword, setIsShowPassword] = useState();
   return (
     <div>
       <section className="py-12 xl:px-28">
@@ -11,18 +14,28 @@ const FormLogin = () => {
 
           <h3 className="title">ACCESS YOUR ACCOUNT</h3>
           <div className="w-full flex flex-col">
-            <input
-              type="email"
-              placeholder="Email Address"
-              required
-              className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
-            />
+            <div>
+              <input
+                type="email"
+                placeholder="Email Address"
+                autoComplete="username"
+                className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
+              />
+            </div>
+            <div className="relative">
+              <span
+                className="z-10 absolute top-4 right-8"
+                onClick={() => setIsShowPassword(!isShowPassword)}
+              >
+                {isShowPassword ? <FaEye /> : <FaEyeSlash />}
+              </span>
+              <input
+                type={isShowPassword ? "text" : "password"}
+                placeholder="Password"
+                autoComplete="password"
+                className="w-full text-black py-2 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
+              />
+            </div>
           </div>
 
           <div className="w-full flex items-center justify-between">

@@ -9,32 +9,38 @@ import notFound from "../pages/notFound/notFound";
 const routes = [
   {
     path: "/",
-    component: Home,
+    name: "login",
+    page: Login,
+  },
+  {
+    path: "/home",
+    name: "home",
+    page: Home,
     isShowFooter: true,
   },
   {
-    path: "/login",
-    component: Login,
-  },
-  {
     path: "/category",
-    component: Category,
+    name: "category",
+    page: Category,
   },
   {
     path: "/product",
-    component: Product,
+    name: "product",
+    page: Product,
   },
   {
     path: "/order",
-    component: Order,
+    name: "order",
+    page: Order,
   },
   {
     path: "/user",
-    component: User,
+    name: "user",
+    page: User,
   },
   {
     path: "*",
-    component: notFound,
+    page: notFound,
   },
 ];
 
