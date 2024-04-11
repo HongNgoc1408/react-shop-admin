@@ -1,15 +1,15 @@
 import React from "react";
-import RightTopPageHome from "../../components/RightTopPageHome";
-import LeftPageHome from "../../components/LeftPageHome";
+import RightTopPageDashboard from "../../components/RightTopPageDashboard";
+import LeftPageDashboard from "../../components/LeftPageDashboard";
 import Footer from "../../components/Footer";
 import ManagerOrder from "../../components/order/ManagerOrder";
 
 const Order = () => {
   return (
     <div className="bg-gray-100 font-family-karla flex">
-      <LeftPageHome />
+      <LeftPageDashboard />
       <div className="w-full flex flex-col h-screen overflow-y-hidden">
-        <RightTopPageHome />
+        <RightTopPageDashboard />
         <ManagerOrder />
         <Footer />
       </div>

@@ -5,7 +5,7 @@ const Footer = () => {
     <footer>
       {/* footer bottom */}
       <div className="bg-Black">
-        <p className="text-white text-center items-center py-3">
+        <p className="text-white text-center items-center py-1 bottom-0">
           © {currentYear} Zara, B2005766.
         </p>
       </div>

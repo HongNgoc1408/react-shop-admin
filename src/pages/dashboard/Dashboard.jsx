@@ -1,20 +1,20 @@
 import React from "react";
 import LeftPageDashboard from "../../components/LeftPageDashboard";
 import RightTopPageDashboard from "../../components/RightTopPageDashboard";
-import ManagerCategory from "../../components/category/ManagerCategory";
-import Footer from "../../components/Footer";
+import RightBottomPageDashboard from "../../components/RightBottomPageDashboard";
+// import Footer from "../../components/Footer";
 
-const Category = () => {
+const Dashboard = () => {
   return (
     <div className="bg-gray-100 flex">
       <LeftPageDashboard />
       <div className="w-full flex flex-col h-screen overflow-y-hidden">
         <RightTopPageDashboard />
-        <ManagerCategory />
-        <Footer />
+        <RightBottomPageDashboard />
+        {/* <Footer /> */}
       </div>
     </div>
   );
 };
 
-export default Category;
+export default Dashboard;

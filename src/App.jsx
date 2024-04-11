@@ -4,28 +4,45 @@ import { routes } from "./router";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { updateUser } from "./redux/slides/useSlides";
+import { jwtDecode } from "jwt-decode";
+import { isJsonString } from "./utils";
+import { useDispatch } from "react-redux";
+import * as UserService from "./services/UserService";
+import LeftPageDashboard from "./components/LeftPageDashboard";
+import RightTopPageDashboard from "./components/RightTopPageDashboard";
+import Footer from "./components/Footer";
 
 function App() {
-  // useEffect(() => {
-  //   fetchApi();
-  // }, []);
+  const dispatch = useDispatch();
 
-  const fetchApi = async () => {
-    try {
-      // console.log("process.env.REACT_BE_API_URL", import.meta.env.VITE_API_KEY);
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_KEY}/product/getAll`
-      );
-      return res.data;
-      // console.log("res", res);
-    } catch (error) {
-      console.error("Error fetching api:", error);
+  useEffect(() => {
+    let storageData = localStorage.getItem("access_token");
+
+    if (storageData && isJsonString(storageData)) {
+      storageData = JSON.parse(storageData);
+      const decoded = jwtDecode(storageData);
+      // console.log("decodedApp", decoded);
+      if (decoded?.id) {
+        handleGetUser(decoded?.id, storageData);
+      }
     }
+  });
+
+  const handleGetUser = async (id, token) => {
+    const res = await UserService.getUser(id, token);
+    dispatch(updateUser({ ...res?.data, access_token: token }));
+    // console.log("res", res);
   };
 
-  const query = useQuery({ queryKey: ["todos"], queryFn: fetchApi });
-  console.log("query", query);
-
+  axios.interceptors.request.use(
+    async (config) => {
+      return config;
+    },
+    (err) => {
+      return Promise.reject(err);
+    }
+  );
   return (
     <div>
       <Router>

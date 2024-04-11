@@ -5,7 +5,7 @@ const AddProducts = () => {
     <div className="flex flex-wrap">
       <div className="w-full lg:w-1/2 my-6 pr-0 lg:pr-2">
         <p className="text-xl pb-6 flex items-center">
-          <i className="fas fa-list mr-3"></i> Add Category
+          <i className="fas fa-list mr-3"></i> Add Product
         </p>
         <div className="leading-loose">
           <form className="p-10 bg-white rounded shadow-xl">
