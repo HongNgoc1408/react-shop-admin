@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   orderItems: [],
-  orderItemsSlected: [],
+  orderItemsSelected: [],
   shippingAddress: {},
   paymentMethod: "",
   itemsPrice: 0,
@@ -44,7 +44,7 @@ export const orderSlide = createSlice({
       const itemOrder = state?.orderItems?.find(
         (item) => item?.product === idProduct
       );
-      const itemOrderSelected = state?.orderItemsSlected?.find(
+      const itemOrderSelected = state?.orderItemsSelected?.find(
         (item) => item?.product === idProduct
       );
       itemOrder.amount++;
@@ -57,7 +57,7 @@ export const orderSlide = createSlice({
       const itemOrder = state?.orderItems?.find(
         (item) => item?.product === idProduct
       );
-      const itemOrderSelected = state?.orderItemsSlected?.find(
+      const itemOrderSelected = state?.orderItemsSelected?.find(
         (item) => item?.product === idProduct
       );
       itemOrder.amount--;
@@ -71,12 +71,12 @@ export const orderSlide = createSlice({
       const itemOrder = state?.orderItems?.filter(
         (item) => item?.product !== idProduct
       );
-      const itemOrderSeleted = state?.orderItemsSlected?.filter(
+      const itemOrderSeleted = state?.orderItemsSelected?.filter(
         (item) => item?.product !== idProduct
       );
 
       state.orderItems = itemOrder;
-      state.orderItemsSlected = itemOrderSeleted;
+      state.orderItemsSelected = itemOrderSeleted;
     },
     removeAllOrderProduct: (state, action) => {
       const { listChecked } = action.payload;
@@ -88,7 +88,7 @@ export const orderSlide = createSlice({
         (item) => !listChecked.includes(item.product)
       );
       state.orderItems = itemOrders;
-      state.orderItemsSlected = itemOrdersSelected;
+      state.orderItemsSelected = itemOrdersSelected;
     },
     selectedOrder: (state, action) => {
       const { listChecked } = action.payload;
@@ -98,7 +98,7 @@ export const orderSlide = createSlice({
           orderSelected.push(order);
         }
       });
-      state.orderItemsSlected = orderSelected;
+      state.orderItemsSelected = orderSelected;
     },
   },
 });

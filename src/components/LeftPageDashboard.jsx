@@ -31,10 +31,10 @@ const LeftPageDashboard = () => {
               <FaTachometerAlt className="mr-3 size-5" />
               Dashboard
             </a>
-            <a href="/category" className="title_cols">
+            {/* <a href="/category" className="title_cols">
               <FaFilter className="mr-3 size-5" />
               Manager Category
-            </a>
+            </a> */}
             <a href="/product" className="title_cols">
               <FaTshirt className="mr-3 size-5" />
               Manager Products
@@ -47,10 +47,10 @@ const LeftPageDashboard = () => {
               <FaUser className="mr-3 size-5" />
               Manager Users
             </a>
-            <a href="#" className="title_cols">
+            {/* <a href="#" className="title_cols">
               <FaPhoneAlt className="mr-3 size-5" />
               Manager Contact
-            </a>
+            </a> */}
           </nav>
 
           <span
@@ -75,9 +75,9 @@ const LeftPageDashboard = () => {
             <a href="/dashboard" className="title_cols">
               <FaTachometerAlt className="ml-1 size-5" />
             </a>
-            <a href="/category" className="title_cols">
+            {/* <a href="/category" className="title_cols">
               <FaFilter className="ml-1 size-5" />
-            </a>
+            </a> */}
             <a href="/product" className="title_cols">
               <FaTshirt className="ml-1 size-5" />
             </a>
@@ -87,9 +87,9 @@ const LeftPageDashboard = () => {
             <a href="/user" className="title_cols">
               <FaUser className="ml-1 size-5" />
             </a>
-            <a href="#" className="title_cols">
+            {/* <a href="#" className="title_cols">
               <FaPhoneAlt className="ml-1 size-5" />
-            </a>
+            </a> */}
           </nav>
 
           <span

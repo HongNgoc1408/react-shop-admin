@@ -11,64 +11,73 @@ import {
   FaTrashAlt,
   FaXRay,
 } from "react-icons/fa";
-import * as ProductService from "../../services/ProductService";
+import * as OrderService from "../../services/OrderService";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const TableViewProduct = () => {
+const TableViewOrder = () => {
   const navigate = useNavigate();
   const [successNotification, setSuccessNotification] = useState(null);
   const [errorNotification, setErrorNotification] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [productIdToDelete, setProductIdToDelete] = useState(null);
+  const [orderIdToDelete, setOrderIdToDelete] = useState(null);
+  // const user = useSelector((state) => state?.user);
+  // console.log("user", user);
   // State cho phân trang
   const [pageNumber, setPageNumber] = useState(0);
-  const productsPerPage = 3;
-  const pagesVisited = pageNumber * productsPerPage;
+  const ordersPerPage = 10;
+  const pagesVisited = pageNumber * ordersPerPage;
   const [showSortModal, setShowSortModal] = useState(false);
   const [sortType, setSortType] = useState("price", "name");
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortIcon, setSortIcon] = useState(<FaSort />);
 
-  const fetchProductAll = async () => {
-    const res = await ProductService.getAllProduct();
+  // const fetchOrderAll = async () => {
+  //   const res = await OrderService.getAllOrder(user?.access_token);
+  //   console.log("res", res);
+  //   return res;
+  // };
+
+  const fetchOrderAll = async () => {
+    const res = await OrderService.getAllOrder();
     return res;
   };
-
-  const { data: products } = useQuery({
-    queryKey: ["products"],
-    queryFn: fetchProductAll,
+  const { data: orders } = useQuery({
+    queryKey: ["orders"],
+    queryFn: fetchOrderAll,
     retry: 3,
     retryDelay: 100,
   });
+  
 
-  const handleDelete = async () => {
-    if (!productIdToDelete) return;
-    const res = await ProductService.deleteProduct(productIdToDelete);
-    if (res.status === "OK") {
-      setProductIdToDelete(null);
-      setShowModal(false);
-      setSuccessNotification("Delete product success!");
-      setTimeout(() => {
-        setSuccessNotification(null);
-        window.location.reload();
-      }, 3000);
-    } else {
-      console.error(res.message);
-      setErrorNotification("Delete product failed! " + res.message);
-      setTimeout(() => {
-        setErrorNotification(null);
-      }, 3000);
-    }
-  };
+  // const handleDelete = async () => {
+  //   if (!orderIdToDelete) return;
+  //   const res = await OrderService.deleteOrder(orderIdToDelete);
+  //   if (res.status === "OK") {
+  //     setOrderIdToDelete(null);
+  //     setShowModal(false);
+  //     setSuccessNotification("Delete order success!");
+  //     setTimeout(() => {
+  //       setSuccessNotification(null);
+  //       window.location.reload();
+  //     }, 3000);
+  //   } else {
+  //     console.error(res.message);
+  //     setErrorNotification("Delete order failed! " + res.message);
+  //     setTimeout(() => {
+  //       setErrorNotification(null);
+  //     }, 3000);
+  //   }
+  // };
 
-  const handleDetailsProduct = (productId) => {
-    navigate(`/product/${productId}`);
-  };
+  // const handleDetailsOrder = (orderId) => {
+  //   navigate(`/order/${orderId}`);
+  // };
 
   // Tính số trang
-  const pageCount = Math.ceil(products?.data?.length / productsPerPage);
+  const pageCount = Math.ceil(orders?.data?.length / ordersPerPage);
 
   // Thay đổi trang
   const changePage = ({ selected }) => {
@@ -76,44 +85,44 @@ const TableViewProduct = () => {
   };
 
   const handleSort = () => {
-    // Đảo ngược thứ tự sắp xếp
     const newOrder = sortOrder === "asc" ? "desc" : "asc";
     setSortOrder(newOrder);
 
-    // Cập nhật icon tương ứng
     setSortIcon(
       <FaSort
         className={
           newOrder === "asc"
             ? "rotate-180 m-1 cursor-pointer "
-            : "m-1 cursor-pointer text-orange-500"
+            : "rotate-0 m-1 cursor-pointer text-orange-500" 
         }
       />
     );
 
+
     setSortType("price");
   };
 
-  const sortedProducts = products?.data
-    ?.sort((a, b) => {
-      if (sortType === "price") {
-        const priceA = parseFloat(a.price);
-        const priceB = parseFloat(b.price);
-        return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
-      }
+  const sortedOrders = orders?.data
+  ?.sort((a, b) => {
+    if (sortType === "price") {
+      const priceA = parseFloat(a.price);
+      const priceB = parseFloat(b.price);
+      return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
+    }
 
-      if (sortType === "name") {
-        const nameA = a.name.toLowerCase();
-        const nameB = b.name.toLowerCase();
-        if (sortOrder === "asc") {
-          return nameA.localeCompare(nameB);
-        } else {
-          return nameB.localeCompare(nameA);
-        }
+    if (sortType === "name") {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      if (sortOrder === "asc") {
+        return nameA.localeCompare(nameB);
+      } else {
+        return nameB.localeCompare(nameA);
       }
-      return 0;
-    })
-    .slice(pagesVisited, pagesVisited + productsPerPage);
+    }
+    return 0;
+  })
+  .slice(pagesVisited, pagesVisited + ordersPerPage);
+
 
   const handleSortModal = () => {
     setShowSortModal(!showSortModal);
@@ -128,6 +137,7 @@ const TableViewProduct = () => {
     setSortType("name");
     setSortOrder("desc");
   };
+
   return (
     <>
       {/* Thông báo thành công */}
@@ -156,6 +166,7 @@ const TableViewProduct = () => {
           </div>
         </div>
       )}
+
       <table className="min-w-full bg-white my-5">
         <thead className="bg-gray-800 text-white">
           <tr>
@@ -163,51 +174,28 @@ const TableViewProduct = () => {
               STT
             </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
-              ID
+              ID Order
             </th>
-            <th className="w-1/12 text-left py-3 px-4 uppercase font-semibold text-sm">
-              Image
+            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
+              ID User
             </th>
             <th
-              className="w-auto text-left text-wrap py-3 px-4 uppercase font-semibold text-sm relative"
-              onClick={handleSortModal}
+              
+              className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm"
             >
-              <div className="flex items-center" onClick={handleSortModal}>
-                <span className="mr-3">Name</span>
-                <FaFilter className="cursor-pointer" />
+              <div className="flex items-center" onClick={handleSort}>
+                <span className="mr-3">Buy Price </span>
+                <span className="cursor-pointer">
+                  {sortType === "price" && sortIcon}
+                </span>
               </div>
-
-              {showSortModal && (
-                <div className="modal z-10 fixed py-2 px-2 my-3 bg-gray-400 rounded-md">
-                  {/* Nội dung modal */}
-                  <div className="modal-content">
-                    <button
-                      onClick={handleSortModal}
-                      className="close-button size-5 m-1"
-                    >
-                      <FaTimesCircle />
-                    </button>
-                    <h6>Sort Options</h6>
-                    <button
-                      onClick={handleSortAZ}
-                      className="mx-4 hover:text-orange-500"
-                    >
-                      <FaSortAlphaDown className="size-5" />
-                    </button>
-                    <button
-                      onClick={handleSortZA}
-                      className=" hover:text-orange-500"
-                    >
-                      <FaSortAlphaUp className="size-5" />
-                    </button>
-                  </div>
-                </div>
-              )}
             </th>
-
+            <th className="w-auto text-left text-wrap py-3 px-4 uppercase font-semibold text-sm relative">
+              Shipping Price
+            </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
               <div className="flex items-center" onClick={handleSort}>
-                <span className="mr-3">Price</span>
+                <span className="mr-3">Total Price </span>
                 <span className="cursor-pointer">
                   {sortType === "price" && sortIcon}
                 </span>
@@ -215,20 +203,31 @@ const TableViewProduct = () => {
             </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
               <div className="flex items-center" onClick={handleSort}>
-                <span className="mr-3">CountInStock</span>
+                <span className="mr-3">Information product order</span>
                 <span className="cursor-pointer">
                   {sortType === "price" && sortIcon}
                 </span>
               </div>
             </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
-              Type
+              <div className="flex items-center" onClick={handleSort}>
+                <span className="mr-3">Information shipping address</span>
+                <span className="cursor-pointer">
+                  {sortType === "price" && sortIcon}
+                </span>
+              </div>
             </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
-              Description
+              Payment Delivery
             </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
-              Status
+              Payment Method
+            </th>
+            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
+              Status Delivery
+            </th>
+            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
+              Status Payment
             </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
               CreatedAt
@@ -242,70 +241,95 @@ const TableViewProduct = () => {
           </tr>
         </thead>
         <tbody className="text-gray-700">
-          {products?.data
-            ?.slice(pagesVisited, pagesVisited + productsPerPage)
-            .map((product, index) => (
-              <tr key={product._id}>
+          {orders?.data
+            ?.slice(pagesVisited, pagesVisited + ordersPerPage)
+            .map((order, index) => (
+              <tr key={order._id}>
                 <td className="w-auto text-left py-3 px-4 border">
                   {index + 1}
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
-                  {product._id}
+                  {order._id}
                 </td>
                 <td className="w-1/12 text-left py-3 px-4 border">
-                  <img src={product.image} alt="" />
+                  {order.user}
                 </td>
                 <td className="w-auto text-left text-nowrap py-3 px-4 border">
-                  <span className="hover:text-blue-500">{product.name}</span>
-                </td>
-                <td className="w-auto text-left py-3 px-4 border">
-                  <span className="hover:text-blue-500">{product.price}</span>
+                  <span className="hover:text-blue-500">
+                    {order.itemsPrice}
+                  </span>
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
                   <span className="hover:text-blue-500">
-                    {product.countInStock}
+                    {order.shippingPrice}
+                  </span>
+                </td>
+                <td className="w-auto text-left py-3 px-4 border">
+                  <span className="hover:text-blue-500">
+                    {order.totalPrice}
                   </span>
                 </td>
                 <td className="w-auto text-left text-nowrap py-3 px-4 border">
-                  <span className="hover:text-blue-500">{product.type}</span>
+                  <span className="hover:text-blue-500">Product in order</span>
+                </td>
+                <td className="w-auto text-left py-3 px-4 border">
+                  <span className="hover:text-blue-500">Customer of order</span>
+                </td>
+                <td className="w-auto text-left text-nowrap py-3 px-4 border">
+                  <span className="hover:text-blue-500">
+                    {order.paymentDelivery}
+                  </span>
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
                   <span className="hover:text-blue-500">
-                    {product.description}
+                    {order.paymentMethod}
                   </span>
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
                   <span
-                    className={`px-2 py-1 font-semibold leading-tight text-red-500 text-nowrap rounded-sm ${
-                      product.status ? "bg-red-100" : ""
+                    className={`px-2 py-1 font-semibold leading-tight  text-nowrap rounded-sm ${
+                      !order.isDelivered
+                        ? "bg-red-100 text-red-500"
+                        : "bg-green-100 text-green-500"
                     }`}
                   >
-                    {product.status}
+                    {`${order.isDelivered}`}
+                  </span>
+                </td>
+                <td className="w-auto text-left py-3 px-4 border">
+                  <span
+                    className={`px-2 py-1 font-semibold leading-tight text-nowrap rounded-sm ${
+                      !order.isPaid
+                        ? "bg-red-100  text-red-500"
+                        : "bg-green-100 text-green-500"
+                    }`}
+                  >
+                    {`${order.isPaid}`}
                   </span>
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
                   <span className="hover:text-blue-500">
-                    {format(Date(product.createdAt), "dd/MM/yyyy HH:mm:ss")}
+                    {format(Date(order.createdAt), "dd/MM/yyyy HH:mm:ss")}
                   </span>
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
                   <span className="hover:text-blue-500">
-                    {format(Date(product.updatedAt), "dd/MM/yyyy HH:mm:ss")}
+                    {format(Date(order.updatedAt), "dd/MM/yyyy HH:mm:ss")}
                   </span>
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
                   <div className="flex flex-row">
                     <span
-                      onClick={() => handleDetailsProduct(product._id)}
+                      // onClick={() => handleDetailsOrder(order._id)}
                       className="text-yellow-500 mr-3"
                     >
                       <FaEdit className="size-6" />
                     </span>
                     <span
-                      onClick={() => {
-                        setProductIdToDelete(product._id);
-                        setShowModal(true);
-                      }}
+                      // onClick={() => {
+                      //   setOrderIdToDelete(order._id);
+                      //   setShowModal(true);
+                      // }}
                       className="text-red-500"
                     >
                       <FaTrashAlt className="size-6" />
@@ -342,7 +366,7 @@ const TableViewProduct = () => {
                             <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                               {/* Delete Button */}
                               <button
-                                onClick={handleDelete}
+                                // onClick={handleDelete}
                                 type="button"
                                 className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-500 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                               >
@@ -396,4 +420,4 @@ const TableViewProduct = () => {
   );
 };
 
-export default TableViewProduct;
+export default TableViewOrder;

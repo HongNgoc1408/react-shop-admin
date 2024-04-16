@@ -12,7 +12,7 @@ const ProfilePage = () => {
       <div className="w-full flex flex-col h-screen overflow-y-hidden">
         <RightTopPageDashboard />
         {/* <RightBottomPageDashboard /> */}
-        <div className="bg-primaryBG py-12 px-4">
+        <div className="bg-primaryBG py-12 px-4 overflow-auto">
           <div className="h-full">
             <ProfileCard />
           </div>

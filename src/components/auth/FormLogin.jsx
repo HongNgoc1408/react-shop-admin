@@ -25,15 +25,15 @@ const FormLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     const res = await loginAdmin(data);
-    console.log("res", res);
+    // console.log("res", res);
     if (res.status === "OK") {
       navigate("/dashboard");
       localStorage.setItem("access_token", JSON.stringify(res?.access_token));
       if (res?.access_token) {
         const decoded = jwtDecode(res?.access_token);
-        console.log("decoded", decoded);
+        // console.log("decoded", decoded);
         if (decoded?.id) {
-          console.log(decoded?.id);
+          // console.log(decoded?.id);
           handleGetUser(decoded?.id, res?.access_token);
         }
       }
@@ -49,7 +49,7 @@ const FormLogin = () => {
   const handleGetUser = async (id, token) => {
     const res = await UserService.getUser(id, token);
     dispatch(updateUser({ ...res?.data, access_token: token }));
-    console.log("resAdmin", res);
+    // console.log("resAdmin", res);
   };
 
   return (

@@ -14,6 +14,8 @@ const FormAddProduct = () => {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
+  const [rating, setRating] = useState("");
+  const [discount, setDiscount] = useState("");
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -35,6 +37,8 @@ const FormAddProduct = () => {
     price,
     description,
     status,
+    rating,
+    discount,
   };
 
   const handleAddProduct = async () => {
@@ -105,11 +109,12 @@ const FormAddProduct = () => {
               placeholder="Image Product"
               aria-label="Image Product"
             />
+            <div className="md:w-1/4 px-3 py-3 items-center">
+              {image && <img src={image} alt="Image Product" width={100} />}
+            </div>
           </div>
-          <div className="md:w-1/4 px-3 items-center">
-            {image && <img src={image} alt="Image Product" width={100} />}
-          </div>
-          <div className="md:w-1/2 px-3">
+
+          <div className="md:w-1/4 px-3">
             <label
               className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
               htmlFor="name"
@@ -128,8 +133,6 @@ const FormAddProduct = () => {
               aria-label="Name Product"
             />
           </div>
-        </div>
-        <div className="-mx-3 md:flex mb-6">
           <div className="md:w-1/4 px-3 mb-6 md:mb-0">
             <label
               className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
@@ -150,6 +153,28 @@ const FormAddProduct = () => {
               aria-label="Price Product"
             />
           </div>
+          <div className="md:w-1/4 px-3 mb-6 md:mb-0">
+            <label
+              className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
+              htmlFor="discount"
+            >
+              Discount
+            </label>
+
+            <input
+              value={discount}
+              onChange={(e) => setDiscount(e.target.value)}
+              className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
+              id="discount"
+              name="discount"
+              type="text"
+              required=""
+              placeholder="Discount Product"
+              aria-label="Discount Product"
+            />
+          </div>
+        </div>
+        <div className="-mx-3 md:flex mb-6">
           <div className="md:w-1/4 px-3">
             <label
               className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
@@ -216,6 +241,25 @@ const FormAddProduct = () => {
               <option value="New">New</option>
               <option value="Sale">Sale</option>
             </select>
+          </div>
+          <div className="md:w-1/4 px-3">
+            <label
+              className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
+              htmlFor="rating"
+            >
+              Rating
+            </label>
+            <input
+              value={rating}
+              onChange={(e) => setRating(e.target.value)}
+              className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
+              id="rating"
+              name="rating"
+              type="number"
+              required=""
+              placeholder="Rating Product"
+              aria-label="Rating Product"
+            />
           </div>
         </div>
 

@@ -45,11 +45,18 @@ export const cancelOrder = async (id, access_token, orderItems, userId) => {
   return res.data;
 };
 
-export const getAllOrder = async (access_token) => {
-  const res = await axiosJWT.get(`/order/get-all-order`, {
-    headers: {
-      token: `Bearer ${access_token}`,
-    },
-  });
+// export const getAllOrder = async (access_token) => {
+//   console.log("access_token", access_token);
+//   const res = await axiosJWT.get(`/order/getAll`, {
+//     headers: {
+//       token: `Bearer ${access_token}`,
+//     },
+//   });
+//   console.log("res.data", res.data);
+//   return res.data;
+// };
+
+export const getAllOrder = async () => {
+  const res = await axiosJWT.get(`/order/getAll`);
   return res.data;
 };

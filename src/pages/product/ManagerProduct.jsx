@@ -58,7 +58,7 @@ const ManagerProduct = () => {
                     ))}
                   </ul>
                 </div>
-                <div className="bg-white p-3">{renderTabContent()}</div>
+                <div className="bg-white p-3 overflow-x-auto">{renderTabContent()}</div>
               </div>
             </main>
           </div>

@@ -56,7 +56,7 @@ const FormEditProduct = () => {
       setTimeout(() => {
         setErrorNotification(null);
       }, 3000);
-      return; 
+      return;
     }
     try {
       const res = await ProductService.updateProduct(
