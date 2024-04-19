@@ -182,6 +182,9 @@ const TableViewUser = () => {
               Address
             </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
+              City
+            </th>
+            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
               IsAdmin
             </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
@@ -215,7 +218,9 @@ const TableViewUser = () => {
               <td className="w-auto text-left text-nowrap py-3 px-4 border">
                 <span className="hover:text-blue-500">{user.address}</span>
               </td>
-
+              <td className="w-auto text-left text-nowrap py-3 px-4 border">
+                <span className="hover:text-blue-500">{user.city}</span>
+              </td>
               <td className="w-auto text-left py-3 px-4 border">
                 <span
                   className={`px-2 py-1 leading-tight text-nowrap rounded-sm ${
@@ -237,7 +242,10 @@ const TableViewUser = () => {
               </td>
               <td className="w-auto text-left py-3 px-4 border">
                 <div className="flex flex-row">
-                  <span className="text-yellow-500 mr-3">
+                  <span
+                    onClick={() => handleDetailsUser(user._id)}
+                    className="text-yellow-500 mr-3"
+                  >
                     <FaEdit className="size-6" />
                   </span>
                   <span

@@ -5,13 +5,13 @@ const AddProducts = () => {
     <div className="flex flex-wrap">
       <div className="w-full lg:w-1/2 my-6 pr-0 lg:pr-2">
         <p className="text-xl pb-6 flex items-center">
-          <i className="fas fa-list mr-3"></i> Add Product
+          <i className="fas fa-list mr-3"></i> Add User
         </p>
         <div className="leading-loose">
           <form className="p-10 bg-white rounded shadow-xl">
             <div className="">
               <label className="block text-sm text-gray-600" htmlFor="name">
-                Name Product
+                Name
               </label>
               <input
                 className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"

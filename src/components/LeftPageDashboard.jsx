@@ -10,6 +10,7 @@ import {
   FaUser,
 } from "react-icons/fa";
 import logo from "/images/zara-logo.png";
+import { Link } from "react-router-dom";
 
 const LeftPageDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,26 +28,26 @@ const LeftPageDashboard = () => {
             </button>
           </div>
           <nav className="text-white text-base font-semibold pt-3">
-            <a href="/dashboard" className="title_cols">
+            <Link to="/dashboard" className="title_cols">
               <FaTachometerAlt className="mr-3 size-5" />
               Dashboard
-            </a>
+            </Link>
             {/* <a href="/category" className="title_cols">
               <FaFilter className="mr-3 size-5" />
               Manager Category
             </a> */}
-            <a href="/product" className="title_cols">
+            <Link to="/product" className="title_cols">
               <FaTshirt className="mr-3 size-5" />
               Manager Products
-            </a>
-            <a href="/order" className="title_cols">
-              <FaShoppingBag className="mr-3 size-5" />
-              Manager Order
-            </a>
-            <a href="/user" className="title_cols">
+            </Link>
+            <Link to="/user" className="title_cols">
               <FaUser className="mr-3 size-5" />
               Manager Users
-            </a>
+            </Link>
+            <Link to="/order" className="title_cols">
+              <FaShoppingBag className="mr-3 size-5" />
+              Manager Order
+            </Link>
             {/* <a href="#" className="title_cols">
               <FaPhoneAlt className="mr-3 size-5" />
               Manager Contact

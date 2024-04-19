@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import ViewProducts from "./ViewProducts";
 import AddProducts from "./AddProducts";
-import EditProducts from "./EditProducts";
 import LeftPageDashboard from "../../components/LeftPageDashboard";
 import RightTopPageDashboard from "../../components/RightTopPageDashboard";
 import Footer from "../../components/Footer";
+import ViewProducts from "../product/ViewProducts";
 
 const ManagerProduct = () => {
   const [openTab, setOpenTab] = useState(1);
@@ -58,7 +57,9 @@ const ManagerProduct = () => {
                     ))}
                   </ul>
                 </div>
-                <div className="bg-white p-3 overflow-x-auto">{renderTabContent()}</div>
+                <div className="bg-white p-3 overflow-x-auto">
+                  {renderTabContent()}
+                </div>
               </div>
             </main>
           </div>

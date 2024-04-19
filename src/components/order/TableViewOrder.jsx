@@ -10,6 +10,7 @@ import {
   FaTimesCircle,
   FaTrashAlt,
   FaXRay,
+  FaEyeSlash,
 } from "react-icons/fa";
 import * as OrderService from "../../services/OrderService";
 import { useQuery } from "@tanstack/react-query";
@@ -23,8 +24,7 @@ const TableViewOrder = () => {
   const [errorNotification, setErrorNotification] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [orderIdToDelete, setOrderIdToDelete] = useState(null);
-  // const user = useSelector((state) => state?.user);
-  // console.log("user", user);
+  const user = useSelector((state) => state?.user);
   // State cho phân trang
   const [pageNumber, setPageNumber] = useState(0);
   const ordersPerPage = 10;
@@ -34,47 +34,44 @@ const TableViewOrder = () => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortIcon, setSortIcon] = useState(<FaSort />);
 
-  // const fetchOrderAll = async () => {
-  //   const res = await OrderService.getAllOrder(user?.access_token);
-  //   console.log("res", res);
-  //   return res;
-  // };
-
   const fetchOrderAll = async () => {
-    const res = await OrderService.getAllOrder();
+    const res = await OrderService.getAllOrder(user?.access_token);
     return res;
   };
-  const { data: orders } = useQuery({
+
+  const { data: orders, refetch: refetchOrders } = useQuery({
     queryKey: ["orders"],
     queryFn: fetchOrderAll,
     retry: 3,
     retryDelay: 100,
   });
-  
 
-  // const handleDelete = async () => {
-  //   if (!orderIdToDelete) return;
-  //   const res = await OrderService.deleteOrder(orderIdToDelete);
-  //   if (res.status === "OK") {
-  //     setOrderIdToDelete(null);
-  //     setShowModal(false);
-  //     setSuccessNotification("Delete order success!");
-  //     setTimeout(() => {
-  //       setSuccessNotification(null);
-  //       window.location.reload();
-  //     }, 3000);
-  //   } else {
-  //     console.error(res.message);
-  //     setErrorNotification("Delete order failed! " + res.message);
-  //     setTimeout(() => {
-  //       setErrorNotification(null);
-  //     }, 3000);
-  //   }
-  // };
+  const handleDelete = async (order) => {
+    try {
+      const res = await OrderService.deleteOrder(
+        order?._id,
+        user?.token
+      );
+      refetchOrders();
+      setSuccessNotification("Delete order successfully!");
+      setTimeout(() => {
+        setSuccessNotification(null);
+      }, 3000);
+    } catch (error) {
+      setErrorNotification("Delete order failed!");
+      setTimeout(() => {
+        setErrorNotification(null);
+      }, 3000);
+      console.log("Error canceling order:", error);
+    }
+  };
 
-  // const handleDetailsOrder = (orderId) => {
-  //   navigate(`/order/${orderId}`);
-  // };
+  const handleDetailsOrder = (orderId) => {
+    navigate(`/order/${orderId}`);
+  };
+  const handleViewDetailsOrder = (orderId) => {
+    navigate(`/order/view/${orderId}`);
+  };
 
   // Tính số trang
   const pageCount = Math.ceil(orders?.data?.length / ordersPerPage);
@@ -93,36 +90,34 @@ const TableViewOrder = () => {
         className={
           newOrder === "asc"
             ? "rotate-180 m-1 cursor-pointer "
-            : "rotate-0 m-1 cursor-pointer text-orange-500" 
+            : "rotate-0 m-1 cursor-pointer text-orange-500"
         }
       />
     );
-
 
     setSortType("price");
   };
 
   const sortedOrders = orders?.data
-  ?.sort((a, b) => {
-    if (sortType === "price") {
-      const priceA = parseFloat(a.price);
-      const priceB = parseFloat(b.price);
-      return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
-    }
-
-    if (sortType === "name") {
-      const nameA = a.name.toLowerCase();
-      const nameB = b.name.toLowerCase();
-      if (sortOrder === "asc") {
-        return nameA.localeCompare(nameB);
-      } else {
-        return nameB.localeCompare(nameA);
+    ?.sort((a, b) => {
+      if (sortType === "price") {
+        const priceA = parseFloat(a.price);
+        const priceB = parseFloat(b.price);
+        return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
       }
-    }
-    return 0;
-  })
-  .slice(pagesVisited, pagesVisited + ordersPerPage);
 
+      if (sortType === "name") {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+        if (sortOrder === "asc") {
+          return nameA.localeCompare(nameB);
+        } else {
+          return nameB.localeCompare(nameA);
+        }
+      }
+      return 0;
+    })
+    .slice(pagesVisited, pagesVisited + ordersPerPage);
 
   const handleSortModal = () => {
     setShowSortModal(!showSortModal);
@@ -179,10 +174,7 @@ const TableViewOrder = () => {
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
               ID User
             </th>
-            <th
-              
-              className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm"
-            >
+            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
               <div className="flex items-center" onClick={handleSort}>
                 <span className="mr-3">Buy Price </span>
                 <span className="cursor-pointer">
@@ -248,11 +240,14 @@ const TableViewOrder = () => {
                 <td className="w-auto text-left py-3 px-4 border">
                   {index + 1}
                 </td>
-                <td className="w-auto text-left py-3 px-4 border">
-                  {order._id}
+                <td
+                  onClick={() => handleViewDetailsOrder(order._id)}
+                  className="w-auto text-left py-3 px-4 border"
+                >
+                  <span className="hover:text-blue-500">{order._id}</span>
                 </td>
                 <td className="w-1/12 text-left py-3 px-4 border">
-                  {order.user}
+                  <span className="hover:text-blue-500">{order.user}</span>
                 </td>
                 <td className="w-auto text-left text-nowrap py-3 px-4 border">
                   <span className="hover:text-blue-500">
@@ -269,10 +264,16 @@ const TableViewOrder = () => {
                     {order.totalPrice}
                   </span>
                 </td>
-                <td className="w-auto text-left text-nowrap py-3 px-4 border">
+                <td
+                  onClick={() => handleViewDetailsOrder(order._id)}
+                  className="w-auto text-left text-nowrap py-3 px-4 border"
+                >
                   <span className="hover:text-blue-500">Product in order</span>
                 </td>
-                <td className="w-auto text-left py-3 px-4 border">
+                <td
+                  onClick={() => handleViewDetailsOrder(order._id)}
+                  className="w-auto text-left py-3 px-4 border"
+                >
                   <span className="hover:text-blue-500">Customer of order</span>
                 </td>
                 <td className="w-auto text-left text-nowrap py-3 px-4 border">
@@ -320,16 +321,22 @@ const TableViewOrder = () => {
                 <td className="w-auto text-left py-3 px-4 border">
                   <div className="flex flex-row">
                     <span
-                      // onClick={() => handleDetailsOrder(order._id)}
+                      onClick={() => handleViewDetailsOrder(order._id)}
+                      className="text-black-500 mr-3"
+                    >
+                      <FaEyeSlash className="size-6" />
+                    </span>
+                    <span
+                      onClick={() => handleDetailsOrder(order._id)}
                       className="text-yellow-500 mr-3"
                     >
                       <FaEdit className="size-6" />
                     </span>
                     <span
-                      // onClick={() => {
-                      //   setOrderIdToDelete(order._id);
-                      //   setShowModal(true);
-                      // }}
+                      onClick={() => {
+                        setOrderIdToDelete(order._id);
+                        setShowModal(true);
+                      }}
                       className="text-red-500"
                     >
                       <FaTrashAlt className="size-6" />
@@ -366,7 +373,7 @@ const TableViewOrder = () => {
                             <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                               {/* Delete Button */}
                               <button
-                                // onClick={handleDelete}
+                                onClick={() => handleDelete(order)}
                                 type="button"
                                 className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-500 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                               >

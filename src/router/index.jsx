@@ -7,6 +7,10 @@ import notFound from "../pages/notFound/notFound";
 import ProfilePage from "../pages/admin/ProfilePage";
 import EditProducts from "../pages/product/EditProducts";
 import test from "../test";
+import EditUsers from "../pages/user/EditUsers";
+import EditOrder from "../pages/order/EditOrder";
+import ViewProduct from "../pages/product/ViewProduct";
+import ViewDetailOrder from "../pages/order/ViewDetailOrder";
 
 const routes = [
   {
@@ -31,9 +35,14 @@ const routes = [
     page: Product,
   },
   {
-    path: "/product/:id",
+    path: "/product/edit/:id",
     name: "EditProduct",
     page: EditProducts,
+  },
+  {
+    path: "/product/view/:id",
+    name: "ViewProduct",
+    page: ViewProduct,
   },
   {
     path: "/user",
@@ -41,9 +50,24 @@ const routes = [
     page: User,
   },
   {
+    path: "/user/:id",
+    name: "EditUser",
+    page: EditUsers,
+  },
+  {
     path: "/order",
     name: "order",
     page: Order,
+  },
+  {
+    path: "/order/:id",
+    name: "EditOrder",
+    page: EditOrder,
+  },
+  {
+    path: "/order/view/:id",
+    name: "ViewOrder",
+    page: ViewDetailOrder,
   },
   {
     path: "/test",

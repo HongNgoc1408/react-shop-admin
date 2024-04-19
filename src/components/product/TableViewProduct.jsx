@@ -9,12 +9,12 @@ import {
   FaSort,
   FaTimesCircle,
   FaTrashAlt,
-  FaXRay,
+  FaEyeSlash,
 } from "react-icons/fa";
 import * as ProductService from "../../services/ProductService";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const TableViewProduct = () => {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const TableViewProduct = () => {
   const [productIdToDelete, setProductIdToDelete] = useState(null);
   // State cho phân trang
   const [pageNumber, setPageNumber] = useState(0);
-  const productsPerPage = 3;
+  const productsPerPage = 10;
   const pagesVisited = pageNumber * productsPerPage;
   const [showSortModal, setShowSortModal] = useState(false);
   const [sortType, setSortType] = useState("price", "name");
@@ -64,7 +64,11 @@ const TableViewProduct = () => {
   };
 
   const handleDetailsProduct = (productId) => {
-    navigate(`/product/${productId}`);
+    navigate(`/product/edit/${productId}`);
+  };
+
+  const handleViewDetailsProduct = (productId) => {
+    navigate(`/product/view/${productId}`);
   };
 
   // Tính số trang
@@ -215,6 +219,14 @@ const TableViewProduct = () => {
             </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
               <div className="flex items-center" onClick={handleSort}>
+                <span className="mr-3">Discount</span>
+                <span className="cursor-pointer">
+                  {sortType === "price" && sortIcon}
+                </span>
+              </div>
+            </th>
+            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
+              <div className="flex items-center" onClick={handleSort}>
                 <span className="mr-3">CountInStock</span>
                 <span className="cursor-pointer">
                   {sortType === "price" && sortIcon}
@@ -225,10 +237,13 @@ const TableViewProduct = () => {
               Type
             </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
-              Description
+              Rating
             </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
               Status
+            </th>
+            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
+              Description
             </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
               CreatedAt
@@ -249,8 +264,11 @@ const TableViewProduct = () => {
                 <td className="w-auto text-left py-3 px-4 border">
                   {index + 1}
                 </td>
-                <td className="w-auto text-left py-3 px-4 border">
-                  {product._id}
+                <td
+                  onClick={() => handleViewDetailsProduct(product._id)}
+                  className="w-auto text-left py-3 px-4 border"
+                >
+                  <span className="hover:text-blue-500">{product._id}</span>
                 </td>
                 <td className="w-1/12 text-left py-3 px-4 border">
                   <img src={product.image} alt="" />
@@ -263,16 +281,19 @@ const TableViewProduct = () => {
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
                   <span className="hover:text-blue-500">
+                    {product.discount}
+                  </span>
+                </td>
+                <td className="w-auto text-left py-3 px-4 border">
+                  <span className="hover:text-blue-500">
                     {product.countInStock}
                   </span>
                 </td>
                 <td className="w-auto text-left text-nowrap py-3 px-4 border">
                   <span className="hover:text-blue-500">{product.type}</span>
                 </td>
-                <td className="w-auto text-left py-3 px-4 border">
-                  <span className="hover:text-blue-500">
-                    {product.description}
-                  </span>
+                <td className="w-auto text-left text-nowrap py-3 px-4 border">
+                  <span className="hover:text-blue-500">{product.rating}</span>
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
                   <span
@@ -281,6 +302,11 @@ const TableViewProduct = () => {
                     }`}
                   >
                     {product.status}
+                  </span>
+                </td>
+                <td className="w-auto text-left py-3 px-4 border ">
+                  <span className="hover:text-blue-500 line-clamp-2">
+                    {product.description}
                   </span>
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
@@ -295,6 +321,12 @@ const TableViewProduct = () => {
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
                   <div className="flex flex-row">
+                    <span
+                      onClick={() => handleViewDetailsProduct(product._id)}
+                      className="text-black-500 mr-3"
+                    >
+                      <FaEyeSlash className="size-6" />
+                    </span>
                     <span
                       onClick={() => handleDetailsProduct(product._id)}
                       className="text-yellow-500 mr-3"

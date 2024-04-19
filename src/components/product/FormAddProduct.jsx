@@ -225,7 +225,7 @@ const FormAddProduct = () => {
               className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
               htmlFor="status"
             >
-              status
+              Status
             </label>
             <select
               value={status}

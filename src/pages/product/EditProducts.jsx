@@ -4,6 +4,7 @@ import FormEditProduct from "../../components/product/FormEditProduct";
 import Footer from "../../components/Footer";
 import RightTopPageDashboard from "../../components/RightTopPageDashboard";
 import LeftPageDashboard from "../../components/LeftPageDashboard";
+import { Link } from "react-router-dom";
 
 const EditProducts = () => {
   return (
@@ -14,7 +15,7 @@ const EditProducts = () => {
           <RightTopPageDashboard />
           <div className="w-full h-screen overflow-x-hidden border-t flex flex-col">
             <main className="w-full flex-grow p-6">
-              <h1 className="text-3xl text-black pb-2">Manager Products</h1>
+            <Link to={"/product"}><h1 className="text-3xl text-black pb-2">Manager Products</h1></Link>
               <div className="flex flex-wrap">
                 <div className="w-full lg:w-full my-6 pr-0 lg:pr-2">
                   <p className="text-xl pb-6 flex items-center">
