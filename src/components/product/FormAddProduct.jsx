@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { createProduct } from "../../services/ProductService";
+import * as TypeService from "../../services/TypeService";
 
 const FormAddProduct = () => {
   const [successNotification, setSuccessNotification] = useState(null);
@@ -9,7 +10,8 @@ const FormAddProduct = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState([]);
+  const [selectedType, setSelectedType] = useState("");
   const [countInStock, setCountInStock] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -28,28 +30,50 @@ const FormAddProduct = () => {
 
     reader.readAsDataURL(file);
   };
+  
+  useEffect(() => {
+    const fetchTypes = async () => {
+      try {
+        const response = await TypeService.getAllType();
+        const typesData = response.data;
+        setType(typesData);
+      } catch (error) {
+        console.error("Error fetching types:", error);
+      }
+    };
+    fetchTypes();
+  }, []);
 
-  const data = {
-    name,
-    image,
-    type,
-    countInStock,
-    price,
-    description,
-    status,
-    rating,
-    discount,
-  };
+  const handleAddProduct = async (e) => {
+    e.preventDefault();
+    const selectedTypeName = type.find(
+      (type) => type._id === selectedType
+    )?.name;
 
-  const handleAddProduct = async () => {
-    // e.preventDefault();
-    // console.log("data", data);
+    if (!selectedTypeName) {
+      setErrorNotification("Selected type does not exist");
+      return;
+    }
+
+    const data = {
+      name,
+      image,
+      type: selectedTypeName, 
+      countInStock,
+      price,
+      description,
+      status,
+      rating,
+      discount,
+    };
+
     const res = await createProduct(data);
-    // console.log("res", res);
+
     if (res.status === "OK") {
       setSuccessNotification("Add product success!");
       setTimeout(() => {
         setSuccessNotification(null);
+        navigate("/product");
       }, 3000);
     } else {
       console.error(res.message);
@@ -195,29 +219,29 @@ const FormAddProduct = () => {
             />
           </div>
 
+          {/* Type */}
           <div className="md:w-1/4 px-3 mb-6 md:mb-0">
             <label
               className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-              htmlFor="type"
+              htmlFor="selectedType"
             >
               Type
             </label>
-
             <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              id="type"
-              name="type"
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              id="selectedType"
+              name="selectedType"
               className="w-full px-5 py-2 text-gray-700 bg-gray-200 rounded"
             >
               <option value="" disabled defaultValue>
                 Select Type
               </option>
-              <option value="Dress">Dress</option>
-              <option value="Suit">Suit</option>
-              <option value="T-shirt">T-shirt</option>
-              <option value="Hoodies">Hoodies</option>
-              <option value="Pan">Pan</option>
+              {type.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {item.name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="md:w-1/4 px-3">
@@ -285,13 +309,13 @@ const FormAddProduct = () => {
         <div className="flex items-center justify-center w-full">
           <button
             disabled={
-              !name.length ||
-              !image.length ||
-              !price.length ||
-              !type.length ||
-              !countInStock.length ||
-              !status.length ||
-              !description.length
+              !name ||
+              !image ||
+              !price ||
+              !selectedType ||
+              !countInStock ||
+              !status ||
+              !description
             }
             onClick={handleAddProduct}
             className="mt-2 font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none  disabled:bg-gray-400 disabled:cursor-no-drop"

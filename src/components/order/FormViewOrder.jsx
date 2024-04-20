@@ -19,18 +19,6 @@ const FormViewOrder = () => {
 
   const userState = useSelector((state) => state.user);
 
-  // const handleImageChange = (event) => {
-  //   const file = event.target.files[0];
-  //   const reader = new FileReader();
-
-  //   reader.onload = function (e) {
-  //     const imageURL = e.target.result;
-  //     setImage(imageURL);
-  //   };
-
-  //   reader.readAsDataURL(file);
-  // };
-
   useEffect(() => {
     const fetchOrderDetails = async () => {
       const res = await OrderService.getOrderByUserId(
@@ -337,7 +325,7 @@ const FormViewOrder = () => {
                   key={item?._id}
                   className="mx-auto grid grid-cols-12 gap-4"
                 >
-                  <div className="col-span-2">
+                  <div className="col-span-4">
                     <div className="md:w-full mb-3">
                       <label
                         className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
@@ -358,7 +346,7 @@ const FormViewOrder = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-2">
+                  <div className="col-span-4">
                     <div className="md:w-full mb-3">
                       <label
                         className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
@@ -379,8 +367,7 @@ const FormViewOrder = () => {
                       />
                     </div>
                   </div>
-
-                  <div className="col-span-2">
+                  <div className="col-span-4">
                     <div className="md:w-full mb-3">
                       <label
                         className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
@@ -401,7 +388,12 @@ const FormViewOrder = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-2">
+                </div>
+                <div
+                  key={item?._id}
+                  className="mx-auto grid grid-cols-12 gap-4"
+                >
+                  <div className="col-span-4">
                     <div className="md:w-full mb-3">
                       <label
                         className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
@@ -422,7 +414,7 @@ const FormViewOrder = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-2">
+                  <div className="col-span-4">
                     <div className="md:w-full mb-3">
                       <label
                         className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
@@ -443,7 +435,7 @@ const FormViewOrder = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-2">
+                  <div className="col-span-4">
                     <div className="md:w-full mb-3">
                       <label
                         className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
@@ -451,7 +443,7 @@ const FormViewOrder = () => {
                       >
                         Image
                       </label>
-                      <img src={item?.image} alt="" />
+                      <img src={item?.image} alt="" width={150} />
                     </div>
                   </div>
                 </div>

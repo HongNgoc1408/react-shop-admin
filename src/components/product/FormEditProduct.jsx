@@ -4,6 +4,7 @@ import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import * as ProductService from "../../services/ProductService";
 import { useSelector } from "react-redux";
+import * as TypeService from "../../services/TypeService";
 
 const FormEditProduct = () => {
   const [successNotification, setSuccessNotification] = useState(null);
@@ -12,7 +13,8 @@ const FormEditProduct = () => {
   const { id } = useParams();
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState([]);
+  const [selectedType, setSelectedType] = useState("");
   const [countInStock, setCountInStock] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -33,58 +35,132 @@ const FormEditProduct = () => {
 
     reader.readAsDataURL(file);
   };
+
+  // useEffect(() => {
+  //   const fetchTypes = async () => {
+  //     try {
+  //       const response = await TypeService.getAllType();
+  //       const typesData = response.data;
+  //       setType(typesData);
+  //     } catch (error) {
+  //       console.error("Error fetching types:", error);
+  //     }
+  //   };
+  //   fetchTypes();
+  // }, []);
+
+  // useEffect(() => {
+  //   const fetchProductDetails = async () => {
+  //     const res = await ProductService.getDetailsProduct(id);
+  //     const fetchTypes = async () => {
+  //       try {
+  //         const response = await TypeService.getAllType();
+  //         const typesData = response.data;
+  //         setType(typesData);
+  //       } catch (error) {
+  //         console.error("Error fetching types:", error);
+  //       }
+  //     };
+  //     if (res?.data) {
+  //       setName(res?.data?.name);
+  //       setType(res?.data?.type);
+  //       setCountInStock(res?.data?.countInStock);
+  //       setPrice(res?.data?.price);
+  //       setDescription(res?.data?.description);
+  //       setStatus(res?.data?.status);
+  //       setImage(res?.data?.image);
+  //       setRating(res?.data?.rating);
+  //       setDiscount(res?.data?.discount);
+  //       // Kiểm tra nếu res?.data?.type là một mảng, nếu không, chuyển đổi nó thành một mảng rỗng
+  //       const productType = Array.isArray(res?.data?.type)
+  //         ? res?.data?.type
+  //         : [fetchTypes()];
+  //       setType(productType);
+  //     }
+  //   };
+
+  //   fetchProductDetails();
+  // }, [id]);
   useEffect(() => {
     const fetchProductDetails = async () => {
-      const res = await ProductService.getDetailsProduct(id);
-      if (res?.data) {
-        setName(res?.data?.name);
-        setType(res?.data?.type);
-        setCountInStock(res?.data?.countInStock);
-        setPrice(res?.data?.price);
-        setDescription(res?.data?.description);
-        setStatus(res?.data?.status);
-        setImage(res?.data?.image);
-        setRating(res?.data?.rating);
-        setDiscount(res?.data?.discount);
+      try {
+        const [productRes, typesRes] = await Promise.all([
+          ProductService.getDetailsProduct(id),
+          TypeService.getAllType(),
+        ]);
+
+        if (productRes?.data) {
+          setName(productRes.data.name);
+          setCountInStock(productRes.data.countInStock);
+          setPrice(productRes.data.price);
+          setDescription(productRes.data.description);
+          setStatus(productRes.data.status);
+          setImage(productRes.data.image);
+          setRating(productRes.data.rating);
+          setDiscount(productRes.data.discount);
+
+          const productType = productRes.data.type;
+          const typesData = typesRes.data;
+
+          setType(typesData);
+
+          if (
+            productType &&
+            typesData.find((type) => type._id === productType._id)
+          ) {
+            setSelectedType(productType._id);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching product details:", error);
       }
     };
 
     fetchProductDetails();
   }, [id]);
 
-  const data = {
-    name,
-    type,
-    countInStock,
-    price,
-    description,
-    status,
-    image,
-    rating,
-    discount,
-  };
-
   const handleUpdateProduct = async (e) => {
     e.preventDefault();
-    if (!name || !type || !countInStock || !price || !image) {
-      setErrorNotification("Please fill in all fields.");
-      setTimeout(() => {
-        setErrorNotification(null);
-      }, 3000);
+
+    const selectedTypeName = type.find(
+      (type) => type._id === selectedType
+    )?.name;
+
+    if (!selectedTypeName) {
+      setErrorNotification("Selected type does not exist");
       return;
     }
+
+    const data = {
+      name,
+      image,
+      type: selectedTypeName,
+      countInStock,
+      price,
+      description,
+      status,
+      rating,
+      discount,
+    };
+    console.log(data);
     try {
       const res = await ProductService.updateProduct(
         id,
         user?.access_token,
         data
       );
-      console.log(res);
+
       if (res.status === "OK") {
-        navigate("/product");
-        setSuccessNotification("Update successful!");
+        setSuccessNotification("Update product success!");
         setTimeout(() => {
           setSuccessNotification(null);
+          navigate("/product");
+        }, 3000);
+      } else {
+        console.error(res.message);
+        setErrorNotification("Update product failed! " + res.message);
+        setTimeout(() => {
+          setErrorNotification(null);
         }, 3000);
       }
     } catch (error) {
@@ -98,7 +174,6 @@ const FormEditProduct = () => {
 
   return (
     <>
-      {/* Thông báo */}
       {/* Thông báo thành công */}
       {successNotification && (
         <div className="absolute top-28 right-0 mt-4 mr-4 bg-green-400 text-white px-4 py-2 rounded">
@@ -234,29 +309,29 @@ const FormEditProduct = () => {
             />
           </div>
 
+          {/* Type */}
           <div className="md:w-1/4 px-3 mb-6 md:mb-0">
             <label
               className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-              htmlFor="type"
+              htmlFor="selectedType"
             >
               Type
             </label>
-
             <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              id="type"
-              name="type"
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              id="selectedType"
+              name="selectedType"
               className="w-full px-5 py-2 text-gray-700 bg-gray-200 rounded"
             >
-              <option value="" disabled>
+              <option value="" disabled defaultValue>
                 Select Type
               </option>
-              <option value="Dress">Dress</option>
-              <option value="Suit">Suit</option>
-              <option value="T-shirt">T-shirt</option>
-              <option value="Hoodies">Hoodies</option>
-              <option value="Pan">Pan</option>
+              {type.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {item.name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="md:w-1/4 px-3">

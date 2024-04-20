@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+
+import React from "react";
 import { FaSearch } from "react-icons/fa";
-// Import PropTypes
 
 const InputSearchTable = () => {
   return (
     <form>
       <div className="w-1/2 justify-end">
-        <div className="flex items-center max-w-md mx-auto bg-gray-200 rounded-lg ">
+        <div className="flex items-center max-w-md mx-auto bg-gray-200 rounded-lg">
           <div className="w-full">
             <input
               type="text"
               className="w-full px-4 text-gray-800 rounded-full focus:outline-none bg-gray-200"
               placeholder="Search..."
+              value=""
             />
           </div>
           <div>
@@ -27,6 +28,5 @@ const InputSearchTable = () => {
     </form>
   );
 };
-
 
 export default InputSearchTable;

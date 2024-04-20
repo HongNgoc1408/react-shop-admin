@@ -11,6 +11,9 @@ import EditUsers from "../pages/user/EditUsers";
 import EditOrder from "../pages/order/EditOrder";
 import ViewProduct from "../pages/product/ViewProduct";
 import ViewDetailOrder from "../pages/order/ViewDetailOrder";
+import ManagerType from "../pages/type/ManagerType";
+import EditTypes from "../pages/type/EditTypes";
+import ViewDetailsUsers from "../pages/user/ViewDetailsUsers";
 
 const routes = [
   {
@@ -28,6 +31,16 @@ const routes = [
     path: "/profile",
     name: "profile",
     page: ProfilePage,
+  },
+  {
+    path: "/type",
+    name: "Type",
+    page: ManagerType,
+  },
+  {
+    path: "/type/edit/:id",
+    name: "EditType",
+    page: EditTypes,
   },
   {
     path: "/product",
@@ -53,6 +66,11 @@ const routes = [
     path: "/user/:id",
     name: "EditUser",
     page: EditUsers,
+  },
+  {
+    path: "/user/view/:id",
+    name: "ViewUser",
+    page: ViewDetailsUsers,
   },
   {
     path: "/order",

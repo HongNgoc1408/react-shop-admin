@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import {
   FaCheckCircle,
   FaEdit,
+  FaEyeSlash,
   FaFilter,
   FaSortAlphaDown,
   FaSortAlphaUp,
@@ -63,7 +64,9 @@ const TableViewUser = () => {
   const handleDetailsUser = (userId) => {
     navigate(`/user/${userId}`);
   };
-
+  const handleViewDetailsUser = (userId) => {
+    navigate(`/user/view/${userId}`);
+  };
   // Tính số trang
   const pageCount = Math.ceil(users?.data?.length / usersPerPage);
 
@@ -202,7 +205,12 @@ const TableViewUser = () => {
           {users?.data?.map((user, index) => (
             <tr key={user._id}>
               <td className="w-auto text-left py-3 px-4 border">{index + 1}</td>
-              <td className="w-auto text-left py-3 px-4 border">{user._id}</td>
+              <td
+                onClick={() => handleViewDetailsUser(user._id)}
+                className="w-auto text-left py-3 px-4 border"
+              >
+                {user._id}
+              </td>
               <td className="w-auto text-left py-3 px-4 border">
                 <img src={user.avatar} alt="" />
               </td>
@@ -243,6 +251,12 @@ const TableViewUser = () => {
               <td className="w-auto text-left py-3 px-4 border">
                 <div className="flex flex-row">
                   <span
+                    onClick={() => handleViewDetailsUser(user._id)}
+                    className="text-black-500 mr-3"
+                  >
+                    <FaEyeSlash className="size-6" />
+                  </span>
+                  <span
                     onClick={() => handleDetailsUser(user._id)}
                     className="text-yellow-500 mr-3"
                   >
@@ -257,7 +271,6 @@ const TableViewUser = () => {
                   >
                     <FaTrashAlt className="size-6" />
                   </span>
-
                   {showModal && (
                     <div className="fixed inset-0 overflow-y-auto">
                       <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">

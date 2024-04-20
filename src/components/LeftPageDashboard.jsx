@@ -32,10 +32,10 @@ const LeftPageDashboard = () => {
               <FaTachometerAlt className="mr-3 size-5" />
               Dashboard
             </Link>
-            {/* <a href="/category" className="title_cols">
+            <a href="/type" className="title_cols">
               <FaFilter className="mr-3 size-5" />
-              Manager Category
-            </a> */}
+              Manager Type
+            </a>
             <Link to="/product" className="title_cols">
               <FaTshirt className="mr-3 size-5" />
               Manager Products
@@ -76,9 +76,9 @@ const LeftPageDashboard = () => {
             <a href="/dashboard" className="title_cols">
               <FaTachometerAlt className="ml-1 size-5" />
             </a>
-            {/* <a href="/category" className="title_cols">
+            <a href="/type" className="title_cols">
               <FaFilter className="ml-1 size-5" />
-            </a> */}
+            </a>
             <a href="/product" className="title_cols">
               <FaTshirt className="ml-1 size-5" />
             </a>

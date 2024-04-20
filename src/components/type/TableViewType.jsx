@@ -9,70 +9,69 @@ import {
   FaSort,
   FaTimesCircle,
   FaTrashAlt,
-  FaEyeSlash,
 } from "react-icons/fa";
-import * as ProductService from "../../services/ProductService";
+import * as TypeService from "../../services/TypeService";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Link, useNavigate } from "react-router-dom";
 
-const TableViewProduct = () => {
+const TableViewType = () => {
   const navigate = useNavigate();
   const [successNotification, setSuccessNotification] = useState(null);
   const [errorNotification, setErrorNotification] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [productIdToDelete, setProductIdToDelete] = useState(null);
+  const [typeIdToDelete, setTypeIdToDelete] = useState(null);
   // State cho phân trang
   const [pageNumber, setPageNumber] = useState(0);
-  const productsPerPage = 10;
-  const pagesVisited = pageNumber * productsPerPage;
+  const typesPerPage = 10;
+  const pagesVisited = pageNumber * typesPerPage;
   const [showSortModal, setShowSortModal] = useState(false);
-  const [sortType, setSortType] = useState("price", "name");
+  const [sortType, setSortType] = useState("name");
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortIcon, setSortIcon] = useState(<FaSort />);
 
-  const fetchProductAll = async () => {
-    const res = await ProductService.getAllProduct();
+  const fetchTypeAll = async () => {
+    const res = await TypeService.getAllType();
     return res;
   };
 
-  const { data: products } = useQuery({
-    queryKey: ["products"],
-    queryFn: fetchProductAll,
+  const { data: types } = useQuery({
+    queryKey: ["types"],
+    queryFn: fetchTypeAll,
     retry: 3,
     retryDelay: 100,
   });
 
   const handleDelete = async () => {
-    if (!productIdToDelete) return;
-    const res = await ProductService.deleteProduct(productIdToDelete);
+    if (!typeIdToDelete) return;
+    const res = await TypeService.deleteType(typeIdToDelete);
     if (res.status === "OK") {
-      setProductIdToDelete(null);
+      setTypeIdToDelete(null);
       setShowModal(false);
-      setSuccessNotification("Delete product success!");
+      setSuccessNotification("Delete type success!");
       setTimeout(() => {
         setSuccessNotification(null);
         window.location.reload();
       }, 3000);
     } else {
       console.error(res.message);
-      setErrorNotification("Delete product failed! " + res.message);
+      setErrorNotification("Delete type failed! " + res.message);
       setTimeout(() => {
         setErrorNotification(null);
       }, 3000);
     }
   };
 
-  const handleDetailsProduct = (productId) => {
-    navigate(`/product/edit/${productId}`);
+  const handleDetailsType = (typeId) => {
+    navigate(`/type/edit/${typeId}`);
   };
 
-  const handleViewDetailsProduct = (productId) => {
-    navigate(`/product/view/${productId}`);
+  const handleViewDetailsType = (typeId) => {
+    navigate(`/type/view/${typeId}`);
   };
 
   // Tính số trang
-  const pageCount = Math.ceil(products?.data?.length / productsPerPage);
+  const pageCount = Math.ceil(types?.data?.length / typesPerPage);
 
   // Thay đổi trang
   const changePage = ({ selected }) => {
@@ -98,14 +97,8 @@ const TableViewProduct = () => {
     setSortType("price");
   };
 
-  const sortedProducts = products?.data
+  const sortedTypes = types?.data
     ?.sort((a, b) => {
-      if (sortType === "price") {
-        const priceA = parseFloat(a.price);
-        const priceB = parseFloat(b.price);
-        return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
-      }
-
       if (sortType === "name") {
         const nameA = a.name.toLowerCase();
         const nameB = b.name.toLowerCase();
@@ -117,7 +110,7 @@ const TableViewProduct = () => {
       }
       return 0;
     })
-    .slice(pagesVisited, pagesVisited + productsPerPage);
+    .slice(pagesVisited, pagesVisited + typesPerPage);
 
   const handleSortModal = () => {
     setShowSortModal(!showSortModal);
@@ -169,9 +162,7 @@ const TableViewProduct = () => {
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
               ID
             </th>
-            <th className="w-1/12 text-left py-3 px-4 uppercase font-semibold text-sm">
-              Image
-            </th>
+
             <th
               className="w-auto text-left text-wrap py-3 px-4 uppercase font-semibold text-sm relative"
               onClick={handleSortModal}
@@ -180,7 +171,6 @@ const TableViewProduct = () => {
                 <span className="mr-3">Name</span>
                 <FaFilter className="cursor-pointer" />
               </div>
-
               {showSortModal && (
                 <div className="modal z-10 fixed py-2 px-2 my-3 bg-gray-400 rounded-md">
                   {/* Nội dung modal */}
@@ -210,51 +200,6 @@ const TableViewProduct = () => {
             </th>
 
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
-              <div className="flex items-center" onClick={handleSort}>
-                <span className="mr-3">Price</span>
-                <span className="cursor-pointer">
-                  {sortType === "price" && sortIcon}
-                </span>
-              </div>
-            </th>
-            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
-              <div className="flex items-center" onClick={handleSort}>
-                <span className="mr-3">Discount</span>
-                <span className="cursor-pointer">
-                  {sortType === "price" && sortIcon}
-                </span>
-              </div>
-            </th>
-            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
-              <div className="flex items-center" onClick={handleSort}>
-                <span className="mr-3">CountInStock</span>
-                <span className="cursor-pointer">
-                  {sortType === "price" && sortIcon}
-                </span>
-              </div>
-            </th>
-
-            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
-              <div className="flex items-center" onClick={handleSort}>
-                <span className="mr-3">Seller</span>
-                <span className="cursor-pointer">
-                  {sortType === "price" && sortIcon}
-                </span>
-              </div>
-            </th>
-            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
-              Type
-            </th>
-            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
-              Rating
-            </th>
-            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
-              Status
-            </th>
-            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
-              Description
-            </th>
-            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
               CreatedAt
             </th>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
@@ -266,88 +211,51 @@ const TableViewProduct = () => {
           </tr>
         </thead>
         <tbody className="text-gray-700">
-          {products?.data
-            ?.slice(pagesVisited, pagesVisited + productsPerPage)
-            .map((product, index) => (
-              <tr key={product._id}>
+          {types?.data
+            ?.slice(pagesVisited, pagesVisited + typesPerPage)
+            .map((type, index) => (
+              <tr key={type._id}>
                 <td className="w-auto text-left py-3 px-4 border">
                   {index + 1}
                 </td>
                 <td
-                  onClick={() => handleViewDetailsProduct(product._id)}
+                  onClick={() => handleViewDetailsType(type._id)}
                   className="w-auto text-left py-3 px-4 border"
                 >
-                  <span className="hover:text-blue-500">{product._id}</span>
+                  <span className="hover:text-blue-500">{type._id}</span>
                 </td>
-                <td className="w-1/12 text-left py-3 px-4 border">
-                  <img src={product.image} alt="" />
-                </td>
+
                 <td className="w-auto text-left text-nowrap py-3 px-4 border">
-                  <span className="hover:text-blue-500">{product.name}</span>
+                  <span className="hover:text-blue-500">{type.name}</span>
                 </td>
-                <td className="w-auto text-left py-3 px-4 border">
-                  <span className="hover:text-blue-500">{product.price}</span>
-                </td>
+
                 <td className="w-auto text-left py-3 px-4 border">
                   <span className="hover:text-blue-500">
-                    {product.discount}
+                    {format(Date(type.createdAt), "dd/MM/yyyy HH:mm:ss")}
                   </span>
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
                   <span className="hover:text-blue-500">
-                    {product.countInStock}
-                  </span>
-                </td>
-                <td className="w-auto text-left py-3 px-4 border">
-                  <span className="hover:text-blue-500">{product.seller}</span>
-                </td>
-                <td className="w-auto text-left text-nowrap py-3 px-4 border">
-                  <span className="hover:text-blue-500">{product.type}</span>
-                </td>
-                <td className="w-auto text-left text-nowrap py-3 px-4 border">
-                  <span className="hover:text-blue-500">{product.rating}</span>
-                </td>
-                <td className="w-auto text-left py-3 px-4 border">
-                  <span
-                    className={`px-2 py-1 font-semibold leading-tight text-red-500 text-nowrap rounded-sm ${
-                      product.status ? "bg-red-100" : ""
-                    }`}
-                  >
-                    {product.status}
-                  </span>
-                </td>
-                <td className="w-auto text-left py-3 px-4 border ">
-                  <span className="hover:text-blue-500 line-clamp-2">
-                    {product.description}
-                  </span>
-                </td>
-                <td className="w-auto text-left py-3 px-4 border">
-                  <span className="hover:text-blue-500">
-                    {format(Date(product.createdAt), "dd/MM/yyyy HH:mm:ss")}
-                  </span>
-                </td>
-                <td className="w-auto text-left py-3 px-4 border">
-                  <span className="hover:text-blue-500">
-                    {format(Date(product.updatedAt), "dd/MM/yyyy HH:mm:ss")}
+                    {format(Date(type.updatedAt), "dd/MM/yyyy HH:mm:ss")}
                   </span>
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
                   <div className="flex flex-row">
-                    <span
-                      onClick={() => handleViewDetailsProduct(product._id)}
+                    {/* <span
+                      onClick={() => handleViewDetailsType(type._id)}
                       className="text-black-500 mr-3"
                     >
                       <FaEyeSlash className="size-6" />
-                    </span>
+                    </span> */}
                     <span
-                      onClick={() => handleDetailsProduct(product._id)}
+                      onClick={() => handleDetailsType(type._id)}
                       className="text-yellow-500 mr-3"
                     >
                       <FaEdit className="size-6" />
                     </span>
                     <span
                       onClick={() => {
-                        setProductIdToDelete(product._id);
+                        setTypeIdToDelete(type._id);
                         setShowModal(true);
                       }}
                       className="text-red-500"
@@ -440,4 +348,4 @@ const TableViewProduct = () => {
   );
 };
 
-export default TableViewProduct;
+export default TableViewType;
