@@ -321,10 +321,32 @@ const FormViewOrder = () => {
           orderItems.map((item, index) => {
             return (
               <>
+                <hr className="my-4 border-2 border-Black" />
                 <div
                   key={item?._id}
                   className="mx-auto grid grid-cols-12 gap-4"
                 >
+                  <div className="col-span-4">
+                    <div className="md:w-full mb-3">
+                      <label
+                        className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
+                        htmlFor="id"
+                      >
+                        STT
+                      </label>
+                      <input
+                        disabled
+                        value={index + 1}
+                        className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
+                        id="id"
+                        name="id"
+                        type="text"
+                        required=""
+                        placeholder="orderItemsId"
+                        aria-label="orderItemsId"
+                      />
+                    </div>
+                  </div>
                   <div className="col-span-4">
                     <div className="md:w-full mb-3">
                       <label
@@ -367,6 +389,8 @@ const FormViewOrder = () => {
                       />
                     </div>
                   </div>
+                </div>
+                <div className="mx-auto grid grid-cols-12 gap-4">
                   <div className="col-span-4">
                     <div className="md:w-full mb-3">
                       <label
@@ -388,11 +412,6 @@ const FormViewOrder = () => {
                       />
                     </div>
                   </div>
-                </div>
-                <div
-                  key={item?._id}
-                  className="mx-auto grid grid-cols-12 gap-4"
-                >
                   <div className="col-span-4">
                     <div className="md:w-full mb-3">
                       <label
