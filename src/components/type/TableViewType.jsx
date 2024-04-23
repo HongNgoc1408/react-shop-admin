@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ReactPaginate from "react-paginate";
 import {
   FaCheckCircle,
@@ -14,6 +14,7 @@ import * as TypeService from "../../services/TypeService";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Link, useNavigate } from "react-router-dom";
+import { DownloadTableExcel } from "react-export-table-to-excel";
 
 const TableViewType = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const TableViewType = () => {
   const [sortType, setSortType] = useState("name");
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortIcon, setSortIcon] = useState(<FaSort />);
+  const tableRef = useRef(null);
 
   const fetchTypeAll = async () => {
     const res = await TypeService.getAllType();
@@ -153,7 +155,18 @@ const TableViewType = () => {
           </div>
         </div>
       )}
-      <table className="min-w-full bg-white my-5">
+
+      <DownloadTableExcel
+        filename="Types table"
+        sheet="Types"
+        currentTableRef={tableRef.current}
+      >
+        <button className="bg-dark-button justify-items-end">
+          Export excel
+        </button>
+      </DownloadTableExcel>
+
+      <table ref={tableRef} className="min-w-full bg-white my-5">
         <thead className="bg-gray-800 text-white">
           <tr>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
@@ -205,7 +218,7 @@ const TableViewType = () => {
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
               UpdatedAt
             </th>
-            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
+            <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm sr-only">
               Actions
             </th>
           </tr>
@@ -218,10 +231,7 @@ const TableViewType = () => {
                 <td className="w-auto text-left py-3 px-4 border">
                   {index + 1}
                 </td>
-                <td
-                  onClick={() => handleViewDetailsType(type._id)}
-                  className="w-auto text-left py-3 px-4 border"
-                >
+                <td className="w-auto text-left py-3 px-4 border">
                   <span className="hover:text-blue-500">{type._id}</span>
                 </td>
 
@@ -241,12 +251,6 @@ const TableViewType = () => {
                 </td>
                 <td className="w-auto text-left py-3 px-4 border">
                   <div className="flex flex-row">
-                    {/* <span
-                      onClick={() => handleViewDetailsType(type._id)}
-                      className="text-black-500 mr-3"
-                    >
-                      <FaEyeSlash className="size-6" />
-                    </span> */}
                     <span
                       onClick={() => handleDetailsType(type._id)}
                       className="text-yellow-500 mr-3"

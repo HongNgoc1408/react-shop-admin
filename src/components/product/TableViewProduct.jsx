@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ReactPaginate from "react-paginate";
 import {
   FaCheckCircle,
@@ -15,6 +15,7 @@ import * as ProductService from "../../services/ProductService";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Link, useNavigate } from "react-router-dom";
+import { DownloadTableExcel } from "react-export-table-to-excel";
 
 const TableViewProduct = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const TableViewProduct = () => {
   const [sortType, setSortType] = useState("price", "name");
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortIcon, setSortIcon] = useState(<FaSort />);
+  const tableRef = useRef(null);
 
   const fetchProductAll = async () => {
     const res = await ProductService.getAllProduct();
@@ -160,7 +162,18 @@ const TableViewProduct = () => {
           </div>
         </div>
       )}
-      <table className="min-w-full bg-white my-5">
+
+      <DownloadTableExcel
+        filename="Products table"
+        sheet="Products"
+        currentTableRef={tableRef.current}
+      >
+        <button className="bg-dark-button justify-items-end">
+          Export excel
+        </button>
+      </DownloadTableExcel>
+
+      <table ref={tableRef} className="min-w-full bg-white my-5">
         <thead className="bg-gray-800 text-white">
           <tr>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">

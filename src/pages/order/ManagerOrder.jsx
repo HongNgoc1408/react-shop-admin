@@ -31,7 +31,7 @@ const ManagerOrder = () => {
           <main className="w-full flex-grow p-6">
             <h1 className="text-3xl text-black pb-6">Manager Orders</h1>
 
-            <div className="w-full mt-6">
+            <div className="w-full">
               <div>
                 <ul className="flex border-b">
                   {[1].map((tabNumber) => (
@@ -51,7 +51,7 @@ const ManagerOrder = () => {
                   ))}
                 </ul>
               </div>
-              <div className="bg-white p-6 overflow-x-auto">{renderTabContent()}</div>
+              <div className="bg-white p-3 overflow-x-auto">{renderTabContent()}</div>
             </div>
           </main>
         </div>

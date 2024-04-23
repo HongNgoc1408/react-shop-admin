@@ -16,8 +16,6 @@ const ManagerUsers = () => {
     switch (openTab) {
       case 1:
         return <ViewUsers />;
-      // case 2:
-      //   return <AddUsers />;
       default:
         return null;
     }
@@ -36,7 +34,7 @@ const ManagerUsers = () => {
               <div className="w-full">
                 <div>
                   <ul className="flex border-b">
-                    {[1,].map((tabNumber) => (
+                    {[1].map((tabNumber) => (
                       <li key={tabNumber} className="-mb-px mr-1">
                         <a
                           onClick={() => handleTabClick(tabNumber)}
@@ -47,17 +45,15 @@ const ManagerUsers = () => {
                           } bg-white inline-block py-2 px-4 font-semibold`}
                           href="#"
                         >
-                          {tabNumber === 1
-                            ? "View"
-                            // : tabNumber === 2
-                            // ? "Add"
-                            : ``}
+                          {tabNumber === 1 ? "View" : ``}
                         </a>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="bg-white p-3">{renderTabContent()}</div>
+                <div className="bg-white p-3 overflow-x-auto">
+                  {renderTabContent()}
+                </div>
               </div>
             </main>
           </div>

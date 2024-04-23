@@ -17,7 +17,6 @@ const RightBottomPageDashboard = () => {
   useEffect(() => {
     const fetchSellerTotal = async () => {
       try {
-        // Lấy danh sách sản phẩm từ mạng
         const response = await ProductService.getAllProduct();
         const products = response.data;
         let totalSeller = 0;

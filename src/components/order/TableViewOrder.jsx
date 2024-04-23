@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ReactPaginate from "react-paginate";
 import {
   FaCheckCircle,
@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { DownloadTableExcel } from "react-export-table-to-excel";
 
 const TableViewOrder = () => {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const TableViewOrder = () => {
   const [sortType, setSortType] = useState("price", "name");
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortIcon, setSortIcon] = useState(<FaSort />);
+  const tableRef = useRef(null);
 
   const fetchOrderAll = async () => {
     const res = await OrderService.getAllOrder(user?.access_token);
@@ -48,10 +50,7 @@ const TableViewOrder = () => {
 
   const handleDelete = async (order) => {
     try {
-      const res = await OrderService.deleteOrder(
-        order?._id,
-        user?.token
-      );
+      const res = await OrderService.deleteOrder(order?._id, user?.token);
       refetchOrders();
       setSuccessNotification("Delete order successfully!");
       setTimeout(() => {
@@ -161,8 +160,16 @@ const TableViewOrder = () => {
           </div>
         </div>
       )}
-
-      <table className="min-w-full bg-white my-5">
+      <DownloadTableExcel
+        filename="Orders table"
+        sheet="Orders"
+        currentTableRef={tableRef.current}
+      >
+        <button className="bg-dark-button justify-items-end">
+          Export excel
+        </button>
+      </DownloadTableExcel>
+      <table ref={tableRef} className="min-w-full bg-white my-5">
         <thead className="bg-gray-800 text-white">
           <tr>
             <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
