@@ -65,6 +65,165 @@ const FormViewOrder = () => {
             <div className="md:w-full mb-3">
               <label
                 className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
+                htmlFor="id"
+              >
+                OrderId
+              </label>
+              <input
+                disabled
+                value={id}
+                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
+                id="id"
+                name="id"
+                type="text"
+                required=""
+                placeholder="OrderId"
+                aria-label="OrderId"
+              />
+            </div>
+            <div className="md:w-full mb-3">
+              <label
+                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
+                htmlFor="itemsPrice"
+              >
+                itemsPrice
+              </label>
+              <input
+                disabled
+                value={itemsPrice}
+                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
+                id="itemsPrice"
+                name="itemsPrice"
+                type="text"
+                required=""
+                placeholder="itemsPrice"
+                aria-label="itemsPrice"
+              />
+            </div>
+            <div className="md:w-full mb-3">
+              <label
+                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
+                htmlFor="shippingPrice"
+              >
+                shippingPrice
+              </label>
+              <input
+                disabled
+                value={shippingPrice}
+                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
+                id="shippingPrice"
+                name="shippingPrice"
+                type="text"
+                required=""
+                placeholder="shippingPrice"
+                aria-label="shippingPrice"
+              />
+            </div>
+            <div className="md:w-full mb-3">
+              <label
+                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
+                htmlFor="totalPrice"
+              >
+                totalPrice
+              </label>
+              <input
+                disabled
+                value={totalPrice}
+                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
+                id="totalPrice"
+                name="totalPrice"
+                type="text"
+                required=""
+                placeholder="totalPrice"
+                aria-label="totalPrice"
+              />
+            </div>
+          </div>
+
+          <div className="col-span-4">
+            <div className="md:w-full mb-3">
+              <label
+                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
+                htmlFor="paymentDelivery"
+              >
+                paymentDelivery
+              </label>
+              <input
+                disabled
+                value={paymentDelivery}
+                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
+                id="paymentDelivery"
+                name="paymentDelivery"
+                type="text"
+                required=""
+                placeholder="paymentDelivery"
+                aria-label="paymentDelivery"
+              />
+            </div>
+            <div className="md:w-full mb-3">
+              <label
+                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
+                htmlFor="isDelivered"
+              >
+                isDelivered
+              </label>
+              <input
+                disabled
+                value={isDelivered}
+                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
+                id="isDelivered"
+                name="isDelivered"
+                type="text"
+                required=""
+                placeholder="isDelivered"
+                aria-label="isDelivered"
+              />
+            </div>
+
+            <div className="md:w-full mb-3">
+              <label
+                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
+                htmlFor="paymentMethod"
+              >
+                paymentMethod
+              </label>
+              <input
+                disabled
+                value={paymentMethod}
+                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
+                id="paymentMethod"
+                name="paymentMethod"
+                type="text"
+                required=""
+                placeholder="paymentMethod"
+                aria-label="paymentMethod"
+              />
+            </div>
+            <div className="md:w-full mb-3">
+              <label
+                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
+                htmlFor="isPaid"
+              >
+                isPaid
+              </label>
+              <input
+                disabled
+                value={isPaid}
+                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
+                id="isPaid"
+                name="isPaid"
+                type="text"
+                required=""
+                placeholder="isPaid"
+                aria-label="isPaid"
+              />
+            </div>
+          </div>
+
+          <div className="col-span-4">
+            <div className="md:w-full mb-3">
+              <label
+                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
                 htmlFor="user"
               >
                 user
@@ -158,317 +317,72 @@ const FormViewOrder = () => {
               />
             </div>
           </div>
-          <div className="col-span-4">
-            <div className="md:w-full mb-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                htmlFor="paymentDelivery"
-              >
-                paymentDelivery
-              </label>
-              <input
-                disabled
-                value={paymentDelivery}
-                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                id="paymentDelivery"
-                name="paymentDelivery"
-                type="text"
-                required=""
-                placeholder="paymentDelivery"
-                aria-label="paymentDelivery"
-              />
-            </div>
-            <div className="md:w-full mb-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                htmlFor="isDelivered"
-              >
-                isDelivered
-              </label>
-              <input
-                disabled
-                value={isDelivered}
-                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                id="isDelivered"
-                name="isDelivered"
-                type="text"
-                required=""
-                placeholder="isDelivered"
-                aria-label="isDelivered"
-              />
-            </div>
-
-            <div className="md:w-full mb-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                htmlFor="paymentMethod"
-              >
-                paymentMethod
-              </label>
-              <input
-                disabled
-                value={paymentMethod}
-                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                id="paymentMethod"
-                name="paymentMethod"
-                type="text"
-                required=""
-                placeholder="paymentMethod"
-                aria-label="paymentMethod"
-              />
-            </div>
-            <div className="md:w-full mb-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                htmlFor="isPaid"
-              >
-                isPaid
-              </label>
-              <input
-                disabled
-                value={isPaid}
-                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                id="isPaid"
-                name="isPaid"
-                type="text"
-                required=""
-                placeholder="isPaid"
-                aria-label="isPaid"
-              />
-            </div>
-          </div>
-          <div className="col-span-4">
-            <div className="md:w-full mb-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                htmlFor="id"
-              >
-                id
-              </label>
-              <input
-                disabled
-                value={id}
-                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                id="id"
-                name="id"
-                type="text"
-                required=""
-                placeholder="OrderId"
-                aria-label="OrderId"
-              />
-            </div>
-            <div className="md:w-full mb-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                htmlFor="itemsPrice"
-              >
-                itemsPrice
-              </label>
-              <input
-                disabled
-                value={itemsPrice}
-                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                id="itemsPrice"
-                name="itemsPrice"
-                type="text"
-                required=""
-                placeholder="itemsPrice"
-                aria-label="itemsPrice"
-              />
-            </div>
-            <div className="md:w-full mb-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                htmlFor="shippingPrice"
-              >
-                shippingPrice
-              </label>
-              <input
-                disabled
-                value={shippingPrice}
-                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                id="shippingPrice"
-                name="shippingPrice"
-                type="text"
-                required=""
-                placeholder="shippingPrice"
-                aria-label="shippingPrice"
-              />
-            </div>
-            <div className="md:w-full mb-3">
-              <label
-                className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                htmlFor="totalPrice"
-              >
-                totalPrice
-              </label>
-              <input
-                disabled
-                value={totalPrice}
-                className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                id="totalPrice"
-                name="totalPrice"
-                type="text"
-                required=""
-                placeholder="totalPrice"
-                aria-label="totalPrice"
-              />
-            </div>
-          </div>
         </div>
-
-        {Array.isArray(orderItems) &&
-          orderItems.map((item, index) => {
-            return (
-              <>
-                <hr className="my-4 border-2 border-Black" />
-                <div
-                  key={item?._id}
-                  className="mx-auto grid grid-cols-12 gap-4"
-                >
-                  <div className="col-span-4">
-                    <div className="md:w-full mb-3">
-                      <label
-                        className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                        htmlFor="id"
-                      >
-                        STT
-                      </label>
-                      <input
-                        disabled
-                        value={index + 1}
-                        className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                        id="id"
-                        name="id"
-                        type="text"
-                        required=""
-                        placeholder="orderItemsId"
-                        aria-label="orderItemsId"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-span-4">
-                    <div className="md:w-full mb-3">
-                      <label
-                        className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                        htmlFor="id"
-                      >
-                        orderItemsId
-                      </label>
-                      <input
-                        disabled
-                        value={item?._id}
-                        className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                        id="id"
-                        name="id"
-                        type="text"
-                        required=""
-                        placeholder="orderItemsId"
-                        aria-label="orderItemsId"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-span-4">
-                    <div className="md:w-full mb-3">
-                      <label
-                        className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                        htmlFor="product"
-                      >
-                        ProductId
-                      </label>
-                      <input
-                        disabled
-                        value={item?.product}
-                        className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                        id="product"
-                        name="product"
-                        type="text"
-                        required=""
-                        placeholder="ProductId"
-                        aria-label="ProductId"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="mx-auto grid grid-cols-12 gap-4">
-                  <div className="col-span-4">
-                    <div className="md:w-full mb-3">
-                      <label
-                        className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                        htmlFor="name"
-                      >
-                        Name Product
-                      </label>
-                      <input
-                        disabled
-                        value={item?.name}
-                        className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                        id="name"
-                        name="name"
-                        type="text"
-                        required=""
-                        placeholder="Name Product"
-                        aria-label="Name Product"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-span-4">
-                    <div className="md:w-full mb-3">
-                      <label
-                        className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                        htmlFor="amount"
-                      >
-                        Amount
-                      </label>
-                      <input
-                        disabled
-                        value={item?.amount}
-                        className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                        id="amount"
-                        name="amount"
-                        type="text"
-                        required=""
-                        placeholder="Amount Product"
-                        aria-label="Amount Product"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-span-4">
-                    <div className="md:w-full mb-3">
-                      <label
-                        className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                        htmlFor="price"
-                      >
-                        Price
-                      </label>
-                      <input
-                        disabled
-                        value={item?.price}
-                        className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded"
-                        id="price"
-                        name="price"
-                        type="text"
-                        required=""
-                        placeholder="Price Product"
-                        aria-label="Price Product"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-span-4">
-                    <div className="md:w-full mb-3">
-                      <label
-                        className="block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2"
-                        htmlFor="image"
-                      >
-                        Image
-                      </label>
-                      <img src={item?.image} alt="" width={150} />
-                    </div>
-                  </div>
-                </div>
-              </>
-            );
-          })}
+        <table className="min-w-full bg-white my-5">
+          <thead className="bg-gray-800 text-white">
+            <tr>
+              <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
+                STT
+              </th>
+              <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
+                orderItemsId
+              </th>
+              <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
+                ProductId
+              </th>
+              <th className="w-auto text-left py-3 px-4 uppercase font-semibold text-sm">
+                Image Product
+              </th>
+              <th className="w-auto text-left text-wrap py-3 px-4 uppercase font-semibold text-sm">
+                Name Product
+              </th>
+              <th className="w-auto text-left text-wrap py-3 px-4 uppercase font-semibold text-sm">
+                Amount Product
+              </th>
+              <th className="w-auto text-left text-wrap py-3 px-4 uppercase font-semibold text-sm">
+                Price Product
+              </th>
+            </tr>
+          </thead>
+          {Array.isArray(orderItems) &&
+            orderItems.map((item, index) => {
+              return (
+                <>
+                  <tbody className="text-gray-700">
+                    <tr key={item?._id}>
+                      <td className="w-auto text-left py-3 px-4 border">
+                        {index + 1}
+                      </td>
+                      <td className="w-auto text-left py-3 px-4 border">
+                        <span className="hover:text-blue-500">{item._id}</span>
+                      </td>
+                      <td className="w-1/12 text-left py-3 px-4 border">
+                        <span className="hover:text-blue-500">
+                          {item?.product}
+                        </span>
+                      </td>
+                      <td className="w-auto text-left py-3 px-4 border">
+                        <img src={item?.image} alt="" width={100} />
+                      </td>
+                      <td className="w-auto text-left py-3 px-4 border">
+                        <span className="hover:text-blue-500">{item.name}</span>
+                      </td>
+                      <td className="w-auto text-left py-3 px-4 border">
+                        <span className="hover:text-blue-500">
+                          {item.amount}
+                        </span>
+                      </td>
+                      <td className="w-auto text-left py-3 px-4 border">
+                        <span className="hover:text-blue-500">
+                          {item.price}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </>
+              );
+            })}
+        </table>
       </form>
     </>
   );

@@ -9,6 +9,8 @@ import {
   FaSort,
   FaTimesCircle,
   FaTrashAlt,
+  FaSearch,
+  FaRedo,
 } from "react-icons/fa";
 import * as TypeService from "../../services/TypeService";
 import { useQuery } from "@tanstack/react-query";
@@ -30,6 +32,9 @@ const TableViewType = () => {
   const [sortType, setSortType] = useState("name");
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortIcon, setSortIcon] = useState(<FaSort />);
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [filteredTypes, setFilteredTypes] = useState([]);
   const tableRef = useRef(null);
 
   const fetchTypeAll = async () => {
@@ -127,6 +132,19 @@ const TableViewType = () => {
     setSortType("name");
     setSortOrder("desc");
   };
+
+  const handleSearch = () => {
+    const filteredTypes = types.data.filter((type) =>
+      type.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredTypes(filteredTypes);
+  };
+
+  const handleReset = () => {
+    setSearchText("");
+    setFilteredTypes([]);
+  };
+
   return (
     <>
       {/* Thông báo thành công */}
@@ -176,14 +194,57 @@ const TableViewType = () => {
               ID
             </th>
 
-            <th
-              className="w-auto text-left text-wrap py-3 px-4 uppercase font-semibold text-sm relative"
-              onClick={handleSortModal}
-            >
-              <div className="flex items-center" onClick={handleSortModal}>
+            <th className="w-auto text-left text-wrap py-3 px-4 uppercase font-semibold text-sm relative">
+              <div className="flex items-center justify-between">
                 <span className="mr-3">Name</span>
-                <FaFilter className="cursor-pointer" />
+                <span className="flex">
+                  <FaSearch
+                    onClick={() => setShowSearchModal(true)}
+                    className="cursor-pointer mr-3"
+                  />
+                  <FaFilter
+                    onClick={handleSortModal}
+                    className="cursor-pointer"
+                  />
+                </span>
               </div>
+              {showSearchModal && (
+                <div className="modal z-10 fixed py-2 px-2 my-3 bg-gray-400 rounded-md">
+                  {/* Nội dung modal */}
+                  <div className="modal-content">
+                    <button
+                      onClick={() => setShowSearchModal(false)}
+                      className="close-button size-5 m-1"
+                    >
+                      <FaTimesCircle />
+                    </button>
+                    <input
+                      placeholder="Search ..."
+                      className="text-Black p-1 rounded"
+                      type="text"
+                      value={searchText}
+                      onChange={(e) => setSearchText(e.target.value)}
+                    />
+                    <span className="flex mt-1">
+                      <button
+                        onClick={handleSearch}
+                        className="mx-4 hover:text-orange-500 flex"
+                      >
+                        <FaSearch className="size-4 m-1" />
+                        <span>Search</span>
+                      </button>
+                      <button
+                        onClick={handleReset}
+                        className="mx-4 hover:text-orange-500 flex"
+                      >
+                        <FaRedo className="size-4 m-1" />
+                        <span>Reset</span>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              )}
+
               {showSortModal && (
                 <div className="modal z-10 fixed py-2 px-2 my-3 bg-gray-400 rounded-md">
                   {/* Nội dung modal */}
@@ -223,105 +284,207 @@ const TableViewType = () => {
             </th>
           </tr>
         </thead>
-        <tbody className="text-gray-700">
-          {types?.data
-            ?.slice(pagesVisited, pagesVisited + typesPerPage)
-            .map((type, index) => (
-              <tr key={type._id}>
-                <td className="w-auto text-left py-3 px-4 border">
-                  {index + 1}
-                </td>
-                <td className="w-auto text-left py-3 px-4 border">
-                  <span className="hover:text-blue-500">{type._id}</span>
-                </td>
+        {filteredTypes.length > 0 ? (
+          <tbody className="text-gray-700">
+            {filteredTypes
+              ?.slice(pagesVisited, pagesVisited + typesPerPage)
+              .map((type, index) => (
+                <tr key={type._id}>
+                  <td className="w-auto text-left py-3 px-4 border">
+                    {index + 1}
+                  </td>
+                  <td className="w-auto text-left py-3 px-4 border">
+                    <span className="hover:text-blue-500">{type._id}</span>
+                  </td>
 
-                <td className="w-auto text-left text-nowrap py-3 px-4 border">
-                  <span className="hover:text-blue-500">{type.name}</span>
-                </td>
+                  <td className="w-auto text-left text-nowrap py-3 px-4 border">
+                    <span className="hover:text-blue-500">{type.name}</span>
+                  </td>
 
-                <td className="w-auto text-left py-3 px-4 border">
-                  <span className="hover:text-blue-500">
-                    {format(Date(type.createdAt), "dd/MM/yyyy HH:mm:ss")}
-                  </span>
-                </td>
-                <td className="w-auto text-left py-3 px-4 border">
-                  <span className="hover:text-blue-500">
-                    {format(Date(type.updatedAt), "dd/MM/yyyy HH:mm:ss")}
-                  </span>
-                </td>
-                <td className="w-auto text-left py-3 px-4 border">
-                  <div className="flex flex-row">
-                    <span
-                      onClick={() => handleDetailsType(type._id)}
-                      className="text-yellow-500 mr-3"
-                    >
-                      <FaEdit className="size-6" />
+                  <td className="w-auto text-left py-3 px-4 border">
+                    <span className="hover:text-blue-500">
+                      {format(Date(type.createdAt), "dd/MM/yyyy HH:mm:ss")}
                     </span>
-                    <span
-                      onClick={() => {
-                        setTypeIdToDelete(type._id);
-                        setShowModal(true);
-                      }}
-                      className="text-red-500"
-                    >
-                      <FaTrashAlt className="size-6" />
+                  </td>
+                  <td className="w-auto text-left py-3 px-4 border">
+                    <span className="hover:text-blue-500">
+                      {format(Date(type.updatedAt), "dd/MM/yyyy HH:mm:ss")}
                     </span>
+                  </td>
+                  <td className="w-auto text-left py-3 px-4 border">
+                    <div className="flex flex-row">
+                      <span
+                        onClick={() => handleDetailsType(type._id)}
+                        className="text-yellow-500 mr-3"
+                      >
+                        <FaEdit className="size-6" />
+                      </span>
+                      <span
+                        onClick={() => {
+                          setTypeIdToDelete(type._id);
+                          setShowModal(true);
+                        }}
+                        className="text-red-500"
+                      >
+                        <FaTrashAlt className="size-6" />
+                      </span>
 
-                    {showModal && (
-                      <div className="fixed inset-0 overflow-y-auto">
-                        <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                          {/* Modal panel */}
-                          <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                              {/* Modal content */}
-                              <div className="sm:flex sm:items-start">
-                                <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                                  {/* Icon */}
-                                  <FaTimesCircle className="h-6 w-6 text-red-600" />
-                                </div>
-                                <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                  <h3 className="text-lg leading-6 font-medium text-gray-900">
-                                    Delete Item
-                                  </h3>
-                                  <div className="mt-2">
-                                    <p className="text-sm text-gray-500">
-                                      Are you sure you want to delete{" "}
-                                      <span className="font-bold">
-                                        Sample Item
-                                      </span>
-                                      ? This action cannot be undone.
-                                    </p>
+                      {showModal && (
+                        <div className="fixed inset-0 overflow-y-auto">
+                          <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                            {/* Modal panel */}
+                            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                {/* Modal content */}
+                                <div className="sm:flex sm:items-start">
+                                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                    {/* Icon */}
+                                    <FaTimesCircle className="h-6 w-6 text-red-600" />
+                                  </div>
+                                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                    <h3 className="text-lg leading-6 font-medium text-gray-900">
+                                      Delete Item
+                                    </h3>
+                                    <div className="mt-2">
+                                      <p className="text-sm text-gray-500">
+                                        Are you sure you want to delete{" "}
+                                        <span className="font-bold">
+                                          Sample Item
+                                        </span>
+                                        ? This action cannot be undone.
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                              {/* Delete Button */}
-                              <button
-                                onClick={handleDelete}
-                                type="button"
-                                className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-500 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                              >
-                                Delete
-                              </button>
-                              {/* Cancel Button */}
-                              <button
-                                onClick={() => setShowModal(false)}
-                                type="button"
-                                className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                              >
-                                Cancel
-                              </button>
+                              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                {/* Delete Button */}
+                                <button
+                                  onClick={handleDelete}
+                                  type="button"
+                                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-500 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                                >
+                                  Delete
+                                </button>
+                                {/* Cancel Button */}
+                                <button
+                                  onClick={() => setShowModal(false)}
+                                  type="button"
+                                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            ))}
-        </tbody>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        ) : (
+          <tbody className="text-gray-700">
+            {types?.data
+              ?.slice(pagesVisited, pagesVisited + typesPerPage)
+              .map((type, index) => (
+                <tr key={type._id}>
+                  <td className="w-auto text-left py-3 px-4 border">
+                    {index + 1}
+                  </td>
+                  <td className="w-auto text-left py-3 px-4 border">
+                    <span className="hover:text-blue-500">{type._id}</span>
+                  </td>
+
+                  <td className="w-auto text-left text-nowrap py-3 px-4 border">
+                    <span className="hover:text-blue-500">{type.name}</span>
+                  </td>
+
+                  <td className="w-auto text-left py-3 px-4 border">
+                    <span className="hover:text-blue-500">
+                      {format(Date(type.createdAt), "dd/MM/yyyy HH:mm:ss")}
+                    </span>
+                  </td>
+                  <td className="w-auto text-left py-3 px-4 border">
+                    <span className="hover:text-blue-500">
+                      {format(Date(type.updatedAt), "dd/MM/yyyy HH:mm:ss")}
+                    </span>
+                  </td>
+                  <td className="w-auto text-left py-3 px-4 border">
+                    <div className="flex flex-row">
+                      <span
+                        onClick={() => handleDetailsType(type._id)}
+                        className="text-yellow-500 mr-3"
+                      >
+                        <FaEdit className="size-6" />
+                      </span>
+                      <span
+                        onClick={() => {
+                          setTypeIdToDelete(type._id);
+                          setShowModal(true);
+                        }}
+                        className="text-red-500"
+                      >
+                        <FaTrashAlt className="size-6" />
+                      </span>
+
+                      {showModal && (
+                        <div className="fixed inset-0 overflow-y-auto">
+                          <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                            {/* Modal panel */}
+                            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                {/* Modal content */}
+                                <div className="sm:flex sm:items-start">
+                                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                    {/* Icon */}
+                                    <FaTimesCircle className="h-6 w-6 text-red-600" />
+                                  </div>
+                                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                    <h3 className="text-lg leading-6 font-medium text-gray-900">
+                                      Delete Item
+                                    </h3>
+                                    <div className="mt-2">
+                                      <p className="text-sm text-gray-500">
+                                        Are you sure you want to delete{" "}
+                                        <span className="font-bold">
+                                          Sample Item
+                                        </span>
+                                        ? This action cannot be undone.
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                {/* Delete Button */}
+                                <button
+                                  onClick={handleDelete}
+                                  type="button"
+                                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-500 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                                >
+                                  Delete
+                                </button>
+                                {/* Cancel Button */}
+                                <button
+                                  onClick={() => setShowModal(false)}
+                                  type="button"
+                                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        )}
       </table>
 
       {/* Phân trang */}
