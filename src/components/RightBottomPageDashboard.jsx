@@ -19,6 +19,7 @@ const RightBottomPageDashboard = () => {
       try {
         const response = await ProductService.getAllProduct();
         const products = response.data;
+        console.log(products);
         let totalSeller = 0;
         products.forEach((product) => {
           if (!isNaN(product.seller)) {
@@ -26,6 +27,7 @@ const RightBottomPageDashboard = () => {
           }
         });
         setTotalQuantitySold(totalSeller);
+
         let totalCountInStocks = 0;
         products.forEach((product) => {
           if (!isNaN(product.countInStock)) {
@@ -48,7 +50,10 @@ const RightBottomPageDashboard = () => {
         const orders = response.data;
         let totalSales = 0;
         orders.forEach((order) => {
-          if (!isNaN(order.itemsPrice)) {
+          if (
+            !isNaN(order.itemsPrice) &&
+            order.isDelivered === "The order has been delivered"
+          ) {
             totalSales += order.itemsPrice;
           }
         });
